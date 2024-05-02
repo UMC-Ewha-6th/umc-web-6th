@@ -1,0 +1,135 @@
+body {
+    width: 100;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: lightblue;
+    font-family: 'Pretendard-Regular';
+    color: rgb(31, 31, 31);
+  }
+  
+  .container {
+    width: 650px;
+    height: 550px;
+    border-radius: 10px;
+    background-color: #E7FEFF;
+  }
+  
+  .form {
+    height: 100%;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
+  
+
+  
+  .btn {
+    width: 180px;
+    height: 30px;
+    border: transparent;
+    border-radius: 5px;
+    background-color: lightgray;
+    color: white;
+    cursor: pointer;
+  }
+  
+  hr {
+    height: 1px;
+    width: 300px;
+    background-color: white;
+    border: none;
+    margin: 18px 0;
+  }
+  
+  input {
+    width : 240px;
+    height: 25px;
+    border-radius: 5px;
+    background-color: #E7FEFF;
+    border: 2px solid white;
+  }
+  
+  .section {
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-bottom: 5px;
+  }
+  
+  .showError {
+    display: flex;
+    flex-direction: column;
+    color: red;
+    font-size: 12px;
+  }
+  
+  .showSuccess {
+    display: flex;
+    flex-direction: column;
+    color: green;
+    font-size: 12px;
+  }
+  
+ 
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    background-color: darkgray;
+    display: none;
+  }
+  
+  .modalBox {
+    width: 400px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: transparent;
+    border-radius: 10px;
+  }
+  
+  .modalText {
+    font-size: 15px;
+    font-weight: 800;
+  }
+  
+  .modalSubText {
+    font-size: 13px;
+  }
+  
+  .modalBtns {
+    width: 220px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 45px;
+  }
+  
+  .closeBtn,
+  .move {
+    font-size: 12px;
+    width: 80px;
+    height: 28px;
+    text-align: center;
+    border: transparent;
+    border-radius: 5px;
+    background-color: darkgray;
+    color: white;
+    cursor: pointer;
+  }
