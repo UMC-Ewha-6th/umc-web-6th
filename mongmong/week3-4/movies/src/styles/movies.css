@@ -1,0 +1,42 @@
+.movieContainer {
+    display: flex;
+    background-color: rgb(33, 35, 72);
+    padding: 0 5px;
+    width: 1040px;
+    height: auto;
+    flex-wrap: wrap;
+}
+
+.movie {
+    width: 240px;
+    height: 440px;
+    background-color: rgb(56, 58, 102);
+    margin: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 6px;
+}
+
+.movie:hover {
+    cursor: pointer;
+
+}
+
+.moviePoster {
+    width: 240px;
+    height: 350px;
+    border-radius: 6px 6px 0 0;
+}
+
+.movieBasic {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    margin: 0;
+}
+
+.movieTitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+}
