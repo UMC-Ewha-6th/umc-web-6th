@@ -23,7 +23,7 @@ export default function NavBar() {
     <BarContainer>
         <BarWrap>
             <BarWrapRight>
-                <Link to='/popular'>
+                <Link to='/'>
                     <BarTitle>UMC&nbsp;Movie</BarTitle>
                 </Link>
                 <ListContainer>
