@@ -1,0 +1,23 @@
+@import 'reset.css';
+
+body {
+    background-color: rgb(45, 38, 84);
+}
+
+.rootWrap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+} 
+
+/* header 시작 */
+.BarWrapRight ul {
+    display: flex;
+    margin-left: 195%;
+}
+
+.BarWrapRight li {
+    padding: 10px;
+    margin-right: 10px;
+}
