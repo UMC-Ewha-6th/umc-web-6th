@@ -11,18 +11,19 @@ const Navbar = () => {
   }
 
   // 로그인 또는 로그아웃 버튼을 클릭할 때 상태를 변경하는 함수
-  const toggleLoginStatus = () => {
-    setIsLoggedIn(!isLoggedIn);
-  }
+  // const toggleLoginStatus = () => {
+  //   setIsLoggedIn(!isLoggedIn);
+  // }
 
   return (
     <HeaderContainer>
       <LogoTitle onClick={goMain}>UMC Movie</LogoTitle>
       <MoveCategory>
         {/* 로그인 또는 로그아웃 버튼 */}
-        <CategoryTitle onClick={toggleLoginStatus}>
+        {/* <CategoryTitle onClick={toggleLoginStatus}>
           {isLoggedIn ? "로그아웃" : "로그인"}
-        </CategoryTitle>
+        </CategoryTitle> */}
+        <CategoryTitle onClick={() => navigate(`/signup`)}>회원가입</CategoryTitle>
         <CategoryTitle onClick={() => navigate(`/popular`)}>Popular</CategoryTitle>
         <CategoryTitle onClick={() => navigate(`/nowplaying`)}>Now Playing</CategoryTitle>
         <CategoryTitle onClick={() => navigate(`/toprated`)}>Top Rated</CategoryTitle>

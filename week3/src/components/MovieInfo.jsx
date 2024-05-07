@@ -5,6 +5,8 @@ import styled from "styled-components";
 const MovieInfo = (props) => {
   const title = props.title;
   const overview = props.info;
+
+
   return (
     <MovieInfoContainer>
       <Title>

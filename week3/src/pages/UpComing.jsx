@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Movies from "../components/Movies.jsx";
 import styled from "styled-components";
+import Loading from "../components/Loading.jsx";
 
 const UpComing = () => {
   const [movieData, setMovieData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const options = {
@@ -20,17 +24,22 @@ const UpComing = () => {
       .then(function (response) {
         console.log(response.data);
         setMovieData(response.data.results)
+        setLoading(false)
       })
       .catch(function (error) {
         console.error(error);
       });
   }, [])
   return (
-    <MovieContainer>
+    <>
+    {loading ? (<Loading />) : (
+      <MovieContainer>
       {movieData.map((data, index) => (
         <Movies data={data} key={index}/>
       ))}
     </MovieContainer>
+    )}
+    </>
   );
 };
 

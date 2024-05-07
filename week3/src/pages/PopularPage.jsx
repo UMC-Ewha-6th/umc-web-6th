@@ -2,9 +2,11 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import styled from "styled-components";
 import Movies from "../components/Movies.jsx";
+import Loading from "../components/Loading.jsx";
 
 const PopularPage = () => {
   const [movieData, setMovieData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const options = {
@@ -20,17 +22,22 @@ const PopularPage = () => {
       .then(function (response) {
         console.log(response.data);
         setMovieData(response.data.results)
+        setLoading(false)
       })
       .catch(function (error) {
         console.error(error);
       });
   }, [])
   return (
-    <MovieContainer>
+    <>
+    {loading ? (<Loading />) : (
+      <MovieContainer>
       {movieData.map((data, index) => (
         <Movies data={data} key={index}/>
       ))}
     </MovieContainer>
+    )}
+    </>
   );
 };
 

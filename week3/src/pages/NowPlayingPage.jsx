@@ -2,9 +2,11 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import Movies from "../components/Movies.jsx";
 import styled from "styled-components";
+import Loading from "../components/Loading.jsx";
 
 const NowPlayingPage = () => {
   const [movieData, setMovieData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const options = {
@@ -20,17 +22,25 @@ const NowPlayingPage = () => {
       .then(function (response) {
         console.log(response.data);
         setMovieData(response.data.results)
+        setLoading(false)
+        console.log(response);
       })
       .catch(function (error) {
         console.error(error);
       });
   }, [])
+
+
   return (
-    <MovieContainer>
+    <>
+    {loading ? (<Loading />) : (
+      <MovieContainer>
       {movieData.map((data, index) => (
         <Movies data={data} key={index}/>
       ))}
     </MovieContainer>
+    )}
+    </>
   );
 };
 

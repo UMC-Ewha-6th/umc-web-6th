@@ -1,40 +1,12 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
+import React from 'react';
+import loading from '../assets/loading.gif'; // 로딩 GIF 파일 경로
 
-
-const Spinner = () => {
+const Loading = () => {
   return (
-    <LoaderWrapper>
-      <Loader />
-    </LoaderWrapper>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <img src={loading} alt="로딩 중..." />
+    </div>
   );
-};
+}
 
-export default Spinner;
-
-const spinAnimation = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
-const Loader = styled.span`
-  width: 48px;
-  height: 48px;
-  border: 5px solid #fff;
-  border-bottom-color: transparent;
-  border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
-  animation: ${spinAnimation} 1s linear infinite;
-`;
-
-const LoaderWrapper = styled.div`
-  width: 100vw;
-  height: 80vh;
-  display: grid;
-  place-content: center;
-`;
+export default Loading;
