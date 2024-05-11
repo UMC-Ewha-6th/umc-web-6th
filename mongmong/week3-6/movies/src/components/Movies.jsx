@@ -6,7 +6,7 @@ import MovieDetail from '../pages/MovieDetail.jsx';
 import { useNavigate } from "react-router-dom";
 
 const Movies = (props) => {
-  const {original_title, overview, poster_path, vote_average} = props.data;
+  const {id, original_title, overview, poster_path, vote_average} = props.data;
   const [isHover, setIsHover] = useState(false);
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ const Movies = (props) => {
 
   return (
     <Movie onMouseEnter={openInfo} onMouseLeave={closeInfo} onClick={()=> 
-      navigate(`/moviedetail/${original_title}`,{ state: { movie: props.data } }
+      navigate(`/moviedetail/${id}`,{ state: { movie: props.data } }
     )}>
       {isHover && <MovieInfo title={original_title} info={overview}/>}
       <MoviePoster src={`https://image.tmdb.org/t/p/w500/${poster_path}`}/>

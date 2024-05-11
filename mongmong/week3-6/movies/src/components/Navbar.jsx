@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 관리하는 상태값
+  
 
   const goMain = () => {
     navigate(`/`);
@@ -19,10 +20,7 @@ const Navbar = () => {
     <HeaderContainer>
       <LogoTitle onClick={goMain}>UMC Movie</LogoTitle>
       <MoveCategory>
-        {/* 로그인 또는 로그아웃 버튼 */}
-        <CategoryTitle onClick={toggleLoginStatus}>
-          {isLoggedIn ? "로그아웃" : "로그인"}
-        </CategoryTitle>
+        <CategoryTitle onClick={() => navigate(`/signup`)}>회원가입</CategoryTitle>
         <CategoryTitle onClick={() => navigate(`/popular`)}>Popular</CategoryTitle>
         <CategoryTitle onClick={() => navigate(`/nowplaying`)}>Now Playing</CategoryTitle>
         <CategoryTitle onClick={() => navigate(`/toprated`)}>Top Rated</CategoryTitle>

@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound.jsx";
 
 import styled from "styled-components";
 import MovieDetail from "./pages/MovieDetail.jsx";
+import SignupPage from "./pages/SignupPage.jsx";
 
 function App() {
   return (
@@ -19,11 +20,12 @@ function App() {
       <Container>
         <Routes>
           <Route path="/" element={<MainPage/>}/>
+          <Route path="/signup" element={<SignupPage/>}/>
           <Route path="/popular" element={<PopularPage/>}/>
           <Route path="/nowplaying" element={<NowPlayingPage/>}/>
           <Route path="/toprated" element={<TopRatedPage/>}/>
           <Route path="/upcoming" element={<UpComing/>}/>
-          <Route path="/moviedetail/:original_title" element={<MovieDetail/>}/>
+          <Route path="/moviedetail/:id" element={<MovieDetail/>}/>
           <Route path="/*" element={<NotFound />} /> 
         </Routes>
       </Container>
