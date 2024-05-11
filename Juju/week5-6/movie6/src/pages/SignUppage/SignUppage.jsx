@@ -135,6 +135,14 @@ export default function SignUppage() {
           setPwConfirmError('');
       }
     };
+
+    const formData = {
+        name: { name },
+        email: { email },
+        age: { age },
+        password: { password },
+        pwConfirm: { pwConfirm },
+      };
   
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -156,11 +164,7 @@ export default function SignUppage() {
         }
         if (formValid) {
             alert("회원가입에 성공하였습니다!");
-            console.log("Fullname:", fullname);
-            console.log("Email:", email);
-            console.log("Age:", age);
-            console.log("Password:", password);
-            console.log("PwConfirm:", pwConfirm);
+            console.log(formData);
         }
 
 
