@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JOIN</title>
+    <link rel="stylesheet" href="./style/join.css" />
+  </head>
+  <body>
+    <div class="modal">
+      <div class="modalBox">
+        <div class="modalText">가입 성공!</div>
+        <div class="modalSubText">umc 챌린저 가입을 축하합니다!!</div>
+        <div class="modalBtns">
+          <button class="closeBtn">닫기</button>
+          <a href="umcPlan.html"> <button class="move">이동</button></a>
+        </div>
+      </div>
+    </div>
+    <div class="box">
+      <form id="form" class="form">
+        <div class="title">회원가입</div>
+        <hr />
+        <div class="section">
+          <div class="subTitle">이름</div>
+          <div class="show">
+            <input type="text" id="name" />
+            <small></small>
+          </div>
+        </div>
+        <div class="section">
+          <div class="subTitle">이메일</div>
+          <div class="show">
+            <input type="text" id="email" />
+            <small></small>
+          </div>
+        </div>
+        <div class="section">
+          <div class="subTitle">나이</div>
+          <div class="show">
+            <input type="text" id="age" />
+            <small></small>
+          </div>
+        </div>
+        <div class="section">
+          <div class="subTitle">비밀번호</div>
+          <div class="show">
+            <input type="password" id="pwd" />
+            <small></small>
+          </div>
+        </div>
+        <div class="section">
+          <div class="subTitle">비밀번호 확인</div>
+          <div class="show">
+            <input type="password" id="rePwd" />
+            <small></small>
+          </div>
+        </div>
+        <button class="btn" type="submit">가입하기</button>
+      </form>
+    </div>
+    <script src="./js/join.js"></script>
+  </body>
+</html>

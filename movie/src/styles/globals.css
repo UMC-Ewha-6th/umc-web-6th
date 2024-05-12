@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'Pretendard_Mid';
+  font-size: normal;
+  src: url(../../public/assets/Pretendard-Regular.ttf) format('ttf');
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  width: 100;
+  overflow-x: hidden;
+  background-color: rgb(37, 50, 100);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Pretendard_Mid';
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}

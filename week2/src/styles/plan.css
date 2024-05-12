@@ -1,0 +1,116 @@
+.planContent {
+  width: 100;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(254, 255, 223);
+  color: rgb(31, 31, 31);
+}
+
+.box {
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.subTitle {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  margin: 20px 0 5px 0;
+}
+
+.long {
+  width: 100%;
+  height: 2px;
+  background-color: white;
+  border: none;
+  margin: 40px 0 15px 0;
+}
+
+.mini {
+  width: 250px;
+  height: 0.8px;
+  border: none;
+  background-color: rgb(188, 188, 188);
+}
+
+input {
+  width: 600px;
+  height: 45px;
+  border-radius: 5px;
+  border: 2px rgb(188, 188, 188) solid;
+  outline: none;
+  font-size: 13px;
+  padding-left: 8px;
+}
+
+.planBox {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.todo,
+.done {
+  width: 295px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+}
+
+.todoList,
+.doneList {
+  width: 250px;
+  height: 310px;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding-left: 0;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.todoList li {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  word-break: break-all;
+}
+
+.doneList li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  word-break: break-all;
+}
+
+.delete {
+  cursor: pointer;
+}
+
+.checkBox {
+  cursor: pointer;
+}
+
+.doneCheckBox {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
