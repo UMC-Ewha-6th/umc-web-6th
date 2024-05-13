@@ -1,41 +1,66 @@
-// Navbar.jsx
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Nav = styled.nav`
-  background-color: #333;
-  padding: 10px;
+// 네비게이션 바 컴포넌트 스타일
+const NavbarContainer = styled.nav`
+  background-color: navy;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
 `;
 
-const Ul = styled.ul`
+const Logo = styled.span`
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+`;
+
+const NavMenu = styled.ul`
   list-style: none;
   display: flex;
-  justify-content: space-around;
 `;
 
-const Li = styled.li`
-  margin-right: 10px;
+const NavItem = styled.li`
+  margin-right: 20px;
 `;
 
-const NavLink = styled(Link)`
+// 활성화된 네비게이션 아이템 스타일
+const activeClassName = 'active';
+
+const NavLinkStyled = styled(NavLink).attrs({ activeClassName })`
   color: white;
   text-decoration: none;
 
-  &:hover {
-    text-decoration: underline;
+  &.${activeClassName} {
+    color: yellow;
   }
 `;
 
+// 네비게이션 바 컴포넌트 정의
 const Navbar = () => {
   return (
-    <Nav>
-      <Ul>
-        <Li><NavLink to="/">Home</NavLink></Li>
-        <Li><NavLink to="/popular">Popular</NavLink></Li>
-      </Ul>
-    </Nav>
+    <NavbarContainer>
+      <Logo>UMC MOVIE</Logo>
+      <NavMenu>
+        <NavItem>
+          <NavLinkStyled exact to="/signup">회원가입</NavLinkStyled>
+        </NavItem>
+        <NavItem>
+          <NavLinkStyled to="/popular">Popular</NavLinkStyled>
+        </NavItem>
+        <NavItem>
+          <NavLinkStyled to="/now-playing">Now Playing</NavLinkStyled>
+        </NavItem>
+        <NavItem>
+          <NavLinkStyled to="/top-rated">Top Rated</NavLinkStyled>
+        </NavItem>
+        <NavItem>
+          <NavLinkStyled to="/upcoming">Upcoming</NavLinkStyled>
+        </NavItem>
+      </NavMenu>
+    </NavbarContainer>
   );
 }
 

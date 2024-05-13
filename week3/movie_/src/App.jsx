@@ -1,29 +1,29 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import PopularPage from './components/PopularPage';
-import AxiosMovie from './AxiosMovie';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { apiKEY } from './api';
 
-const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKEY}&language=en-US&page=1`;
+// 각 페이지 컴포넌트 import
+//import Signup from './components/Signup';
+//import Popular from './components/PopularPage';
+//import NowPlaying from './components/NowPlayingPage';
+//import TopRated from './components/TopRatedPage';
+//import Upcoming from './components/UpComing';
 
-function App() {
+const App = () => {
   return (
     <Router>
-      <div className="App">
+      <div>
         <Navbar />
-        <AxiosMovie url={url} />
-        <main>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/popular" element={<PopularPage />} />
-          </Routes>
-        </main>
+        {/* <Switch>
+          <Route exact path="/signup" component={Signup} />
+          <Route path="/popular" component={Popular} />
+          <Route path="/now-playing" component={NowPlaying} />
+          <Route path="/top-rated" component={TopRated} />
+          <Route path="/upcoming" component={Upcoming} />
+        </Switch> */}
       </div>
     </Router>
   );
 }
-
-
 
 export default App;
