@@ -7,7 +7,8 @@ const MainPage = () => {
 
   const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태 추가
   const [searchResults, setSearchResults] = useState([]); // 검색 결과 상태 추가
-  const [showResults, setShowResults] = useState(false); // 검색 결과 표시 여부 상태 추가
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+
 
   // 검색어 입력 핸들러
   const handleSearchInputChange = (e) => {
@@ -16,14 +17,14 @@ const MainPage = () => {
 
   useEffect(() => {
     if (searchTerm.trim() === '') {
-      setShowResults(false); // 검색어가 비어 있으면 검색 결과 숨기기
-      setSearchResults([]); // 검색 결과를 초기화
-      return; // 빈 검색어일 때는 이후의 코드 실행하지 않고 종료
+      setSearchResults([]); // 검색 결과 초기화
+      return; // 빈 검색어일 때는 검색 결과를 받아오지 않음
     }
 
     // 검색어가 변경될 때마다 API 호출
     const fetchSearchResults = async () => {
       try {
+        setIsLoading(true); // 데이터를 받아오는 중임을 표시
         const response = await fetch(
           `https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1&query=${searchTerm}`,
           {
@@ -35,9 +36,10 @@ const MainPage = () => {
         );
         const data = await response.json();
         setSearchResults(data.results);
-        setShowResults(true); // 검색 결과를 표시
       } catch (error) {
         console.error('Error fetching search results:', error);
+      } finally {
+        setIsLoading(false); // 데이터 받아오기 완료 후 로딩 상태 변경
       }
     };
 
@@ -63,13 +65,15 @@ const MainPage = () => {
             value={searchTerm}
             onChange={handleSearchInputChange} />
         </SearchBox>
-        {showResults && (
-          <Result>
-            {searchResults.map((movies) => (
+        <Result>
+          {isLoading ? (
+            <LoadingText>데이터를 받아오는 중입니다.</LoadingText>
+          ) : (
+            searchResults.map((movies) => (
               <Movies key={movies.id} data={movies} />
-            ))}
-          </Result>
-        )}
+            ))
+          )}
+        </Result>
       </SearchContainer>
     </MainContainer>
   );
@@ -146,4 +150,10 @@ const Result = styled.div`
   &::-webkit-scrollbar-track {
     background-color: transparent;
   }
+`
+
+const LoadingText = styled.p`
+  color: white;
+  font-size: 20px;
+  margin: auto;
 `
