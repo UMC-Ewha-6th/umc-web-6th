@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./signIn.css" rel="stylesheet" />
+    <title>SignIn</title>
+  </head>
+  <body>
+    <div class="full_screen">
+      <div class="wrapper">
+        <h1>회원가입</h1>
+
+        <div class="inputDiv">
+          <div class="inputForm">
+            <div class="label">이름</div>
+            <input type="text" id="name" />
+            <span id="name_error" class="error_message"></span>
+          </div>
+          <div class="inputForm">
+            <div class="label">이메일</div>
+            <input type="text" id="email" />
+            <span id="email_error" class="error_message"></span>
+          </div>
+          <div class="inputForm">
+            <div class="label">나이</div>
+            <input type="text" id="age" />
+            <span id="age_error" class="error_message"></span>
+          </div>
+          <div class="inputForm">
+            <div class="label">비밀번호</div>
+            <input type="password" id="pwd" />
+            <span id="pwd_error" class="error_message"></span>
+          </div>
+          <div class="inputForm">
+            <div class="label">비밀번호 확인</div>
+            <input type="password" id="confirmPwd" />
+            <span id="confirmPwd_error" class="error_message"></span>
+          </div>
+        </div>
+        <button class="submitBtn" onClick="handleSubmit()">가입하기</button>
+      </div>
+
+      <div class="modalWrapper" style="display: none">
+        <div class="modal">
+          <h1 class="modalTitle">가입 성공!</h1>
+          <p class="modalContent">UMC 챌린저 가입을 축하합니다!!</p>
+          <div class="closeDiv">
+            <button class="closeBtn">닫기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./index.js"></script>
+  </body>
+</html>

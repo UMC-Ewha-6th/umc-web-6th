@@ -1,0 +1,37 @@
+.modal-wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal{
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    width: 300px;
+  }
+  .modal-title{
+    font-size: 18px;
+  }
+  .modal-content{
+    font-size: 15px;
+  }
+  .close-div{
+    height: 30px;
+    position: relative;
+  }
+  .close-btn{
+    background-color: #006540;
+    color: white;
+    height: 25px;
+    width: 40px;
+    border-radius: 7px;
+    border: none;
+    position: absolute;
+    right: 5px;
+  }

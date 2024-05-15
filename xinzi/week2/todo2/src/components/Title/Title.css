@@ -1,0 +1,8 @@
+h1{
+    height: 150px;
+    width: 800px;
+    text-align: center;
+    line-height: 150px;
+    border-bottom: solid rgb(130, 140, 180) 1px;
+    margin: 0px;
+}

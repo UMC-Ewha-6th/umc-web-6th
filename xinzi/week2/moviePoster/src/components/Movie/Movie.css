@@ -1,0 +1,25 @@
+.movie_wrapper{
+    background-color: rgb(70, 70, 130);
+    height: 350px;
+    width: 180px;
+    border-radius: 5px;
+    margin: 5px;
+    position: relative;
+}
+.img{
+    display: flex;
+    height: 270px;
+    width: 180px;
+}
+.title{
+    display:inline-flex;
+    width: 130px;
+    margin: 15px 10px;
+    font-size: 13px;
+    color: white;
+}
+.vote_average{
+    margin: 15px 5px;
+    font-size: 13px;
+    color: white;
+}
