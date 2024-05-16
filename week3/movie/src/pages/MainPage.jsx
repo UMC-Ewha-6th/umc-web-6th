@@ -6,6 +6,9 @@ const MainPage = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [showResult, setShowResult] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const [error, setError] = useState(null); // 에러 상태 추가
+  const navigate = useNavigate();
 
   const searchInputChange = (e) => {
     setSearch(e.target.value);
@@ -19,20 +22,32 @@ const MainPage = () => {
     }
 
     const fetchSearchResult = async () => {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1&query=${search}`,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMzE0OTMyMGY2MWM0ZTljYTY3MjM5ZTA2OGQ4MDI4ZCIsInN1YiI6IjY2MzMyMGI5OTlkNWMzMDEyNjU2OTJjYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KBYeoId4cpixWOlGWUpsZs48qmPvniJhUsOhlmxL8dg",
-          },
-        }
-      );
+      setIsLoading(true); // 데이터 요청 시작 시 로딩 상태 설정
 
-      const data = await response.json();
-      setSearchResult(data.results); // Corrected property name to 'results'
-      setShowResult(true); // Moved setShowResult to here
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1&query=${search}`,
+          {
+            headers: {
+              accept: "application/json",
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMzE0OTMyMGY2MWM0ZTljYTY3MjM5ZTA2OGQ4MDI4ZCIsInN1YiI6IjY2MzMyMGI5OTlkNWMzMDEyNjU2OTJjYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KBYeoId4cpixWOlGWUpsZs48qmPvniJhUsOhlmxL8dg",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("데이터를 불러올 수 없습니다."); // 에러 처리
+        }
+
+        const data = await response.json();
+        setSearchResult(data.results);
+        setShowResult(true);
+      } catch (error) {
+        setError(error.message); // 에러 메시지 설정
+      } finally {
+        setIsLoading(false); // 데이터 요청 완료 시 로딩 상태 해제
+      }
     };
 
     const delay = setTimeout(() => {
@@ -43,7 +58,7 @@ const MainPage = () => {
   }, [search]);
 
   const getRoundedRating = (rating) => {
-    return rating.toFixed(1); // 소수점 한 자리까지 반올림
+    return rating.toFixed(1);
   };
 
   return (
@@ -60,14 +75,35 @@ const MainPage = () => {
               value={search}
               onChange={searchInputChange}
             />
-            {showResult && searchResult.length > 0 && (
+            {isLoading ? ( // 로딩 중이면 로딩 메시지 표시
+              <LoadingMessage>데이터를 받아오는 중 입니다...</LoadingMessage>
+            ) : error ? ( // 에러 발생 시 에러 메시지 표시
+              <ErrorMessage>{error}</ErrorMessage>
+            ) : showResult && searchResult.length > 0 ? ( // 데이터가 있으면 결과 표시
               <SearchResult>
                 {searchResult.map((movie) => (
-                  <StyledMovie key={movie.id}>
-                    <img
-                      src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
-                      alt={movie.title}
-                    />
+                  <StyledMovie
+                    key={movie.id}
+                    onClick={() =>
+                      navigate(`/movie/${movie.id}`, {
+                        state: {
+                          title: movie.title,
+                          vote_average: movie.vote_average,
+                          poster_path: movie.poster_path,
+                          backdrop_path: movie.backdrop_path,
+                          overview: movie.overview,
+                          release_date: movie.release_date,
+                          id: movie.id,
+                        },
+                      })
+                    }
+                  >
+                    {movie.poster_path && (
+                      <img
+                        src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
+                        alt={movie.title}
+                      />
+                    )}
                     <MovieContent>
                       <MovieTitle>{movie.title}</MovieTitle>
                       <MovieRating>
@@ -77,6 +113,8 @@ const MainPage = () => {
                   </StyledMovie>
                 ))}
               </SearchResult>
+            ) : (
+              <NoResultMessage></NoResultMessage>
             )}
           </Search>
         </SearchContainer>
@@ -132,7 +170,7 @@ const SearchContainer = styled.div`
 const SearchInput = styled.input`
   height: 40px;
   width: 40%;
-  margin: 20px auto; /* 수평 가운데 정렬을 위해 margin을 auto로 설정 */
+  margin: 20px auto;
   border-radius: 30px;
   padding-inline-start: 20px;
 `;
@@ -141,20 +179,17 @@ const Search = styled.div`
   width: 80%;
   display: flex;
   align-items: center;
-  justify-content: center; /* 가운데 정렬 */
+  justify-content: center;
   flex-direction: column;
 `;
 
 const SearchResult = styled.div`
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(200px, 1fr)
-  ); /* 영화 카드를 그리드로 배치 */
-  max-height: 60vh; /* 최대 높이 지정 */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  max-height: 60vh;
   place-items: center;
-  overflow-y: auto; /* Y 축으로 스크롤 가능하도록 설정 */
-  padding: 0 16px; /* 좌우 여백 추가 */
+  overflow-y: auto;
+  padding: 0 16px;
   width: 100%;
   background-color: rgb(21, 30, 63);
   border-radius: 5px;
@@ -177,6 +212,7 @@ const StyledMovie = styled.div`
   display: flex;
   flex-direction: column;
   cursor: pointer;
+
   img {
     max-width: 100%;
   }
@@ -196,4 +232,22 @@ const MovieTitle = styled.p`
 const MovieRating = styled.span`
   margin-left: 3px;
   font-size: small;
+`;
+
+const LoadingMessage = styled.p`
+  color: white;
+  font-size: 16px;
+  margin-top: 20px;
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 16px;
+  margin-top: 20px;
+`;
+
+const NoResultMessage = styled.p`
+  color: white;
+  font-size: 16px;
+  margin-top: 20px;
 `;

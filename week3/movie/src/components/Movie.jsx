@@ -10,12 +10,22 @@ const Movie = ({
   poster_path,
   overview,
   release_date,
+  backdrop_path,
+  id,
 }) => {
   const navigate = useNavigate();
 
   const onClickMovieItem = () => {
-    navigate(`/movie/${title}`, {
-      state: { title, vote_average, poster_path, overview, release_date },
+    navigate(`/movie/${id}`, {
+      state: {
+        id,
+        title,
+        vote_average,
+        poster_path,
+        overview,
+        release_date,
+        backdrop_path,
+      },
     });
   };
 

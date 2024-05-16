@@ -1,27 +1,60 @@
-import React from "react";
-import { useParams, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const baseUrl = "https://image.tmdb.org/t/p/w200";
 
 const MovieDetail = () => {
-  // useParams를 사용하여 URL의 동적인 부분인 movieName을 가져옴
-  const { movieName } = useParams();
   const { state } = useLocation();
+  const [creditResult, setCreditResult] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const getCreditResult = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${state.id}/credits`,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMzE0OTMyMGY2MWM0ZTljYTY3MjM5ZTA2OGQ4MDI4ZCIsInN1YiI6IjY2MzMyMGI5OTlkNWMzMDEyNjU2OTJjYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KBYeoId4cpixWOlGWUpsZs48qmPvniJhUsOhlmxL8dg",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("데이터를 불러올 수 없습니다."); // 에러 처리
+      }
+      const json = await response.json();
+      console.log("Credit data:", json); //여기까지는 작동 됨
+      console.log("Results:", json.cast);
+      setCreditResult(json.cast);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false); // 데이터 요청 완료 시 로딩 상태 해제
+    }
+  };
+
+  useEffect(() => {
+    getCreditResult();
+  }, []);
 
   return (
     <>
-      <Background poster={`${baseUrl + state.poster_path}`}></Background>
       <DetailContainer>
+        <Background poster={`${baseUrl + state.backdrop_path}`}></Background>
         <DetailImg>
           <img
             src={baseUrl + state.poster_path}
-            alt={movieName}
+            alt={state.title}
             height="100%"
           />
         </DetailImg>
         <DetailInfo>
-          <DetailTitle>{movieName}</DetailTitle>
+          <DetailTitle>{state.title}</DetailTitle>
           <DetailVote>
             평점&nbsp;
             <Rating rating={state.vote_average} />
@@ -33,12 +66,43 @@ const MovieDetail = () => {
           </DetailOverview>
         </DetailInfo>
       </DetailContainer>
+
+      <DetailContainer>
+        {isLoading ? (
+          <LoadingMessage>데이터를 받아오는 중 입니다...</LoadingMessage>
+        ) : error ? (
+          <ErrorMessage>{error}</ErrorMessage>
+        ) : creditResult && creditResult.length > 0 ? (
+          creditResult.map((cast) => (
+            <ActorContainer>
+              {cast.profile_path && ( // 배우의 프로필 이미지가 있는 경우에만 출력
+                <ActorImage src={baseUrl + cast.profile_path} alt={cast.name} />
+              )}
+              <ActorName>{cast.name}</ActorName> {/* 배우의 이름 출력 */}
+            </ActorContainer>
+          ))
+        ) : (
+          <NoResultMessage></NoResultMessage>
+        )}
+      </DetailContainer>
+      <></>
     </>
   );
 };
 
 export default MovieDetail;
-
+const ActorName = styled.p`
+  color: white;
+`;
+const ActorContainer = styled.div``;
+const ActorImage = styled.div`
+  height: 20px;
+  width: 20px;
+`;
+const CreditContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
 const Background = styled.div`
   background-image: url(${(props) => props.poster});
   background-size: cover;
@@ -63,6 +127,7 @@ const DetailContainer = styled.div`
   padding-top: 150px;
   padding-bottom: 30px;
   align-items: center;
+  overflow: hidden;
 `;
 
 const DetailImg = styled.div`
@@ -126,3 +191,20 @@ function Rating({ rating }) {
   }
   return <Starcontainer>{stars}</Starcontainer>;
 }
+
+const LoadingMessage = styled.p`
+  color: white;
+  font-size: 16px;
+  margin-top: 20px;
+`;
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 16px;
+  margin-top: 20px;
+`;
+
+const NoResultMessage = styled.p`
+  color: white;
+  font-size: 16px;
+  margin-top: 20px;
+`;
