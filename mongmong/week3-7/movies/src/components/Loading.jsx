@@ -38,5 +38,4 @@ const LoaderWrapper = styled.div`
   display: grid;
   place-content: center;
   background-color: rgb(56, 58, 102);
-  margin-bottom:10000px;
 `;

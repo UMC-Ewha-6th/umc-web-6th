@@ -4,10 +4,46 @@ import axios from "axios";
 import Movies from "../components/Movies.jsx";
 import debounce from 'lodash.debounce';
 import DataLoading from '../components/DataLoading.jsx';
+import Navbar from '../components/Navbar.jsx';
 
 const MainPage = () => {
   const [movieData, setMovieData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+
+      try {
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        console.log(token);
+
+        // Include authorization headers in the request
+        const response = await axios.get('http://localhost:8080/auth/me',  {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log('Response:', response.data);
+        setUser(response.data.name);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    // Call the fetchData function when the component mounts
+    if (localStorage.getItem('token') != null)
+    {
+      fetchData();
+    }
+
+    // Optionally, return a cleanup function if needed
+    return () => {
+      // Any cleanup code can go here
+    };
+  }, []);
 
   const Search = (value) => {
     const options = {
@@ -42,8 +78,12 @@ const MainPage = () => {
   
   return (
     <MainContainer>
+      <Navbar/>
       <BannerContainer>
+        {(localStorage.getItem('token') != null) ?
+        <TitleText>{user}님 환영합니다</TitleText>:
         <TitleText>환영합니다</TitleText>
+        }
       </BannerContainer>
       <SearchContainer>
         <SearchText>📽 Find your movies️ !</SearchText>

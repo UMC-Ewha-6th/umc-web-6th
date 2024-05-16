@@ -3,15 +3,16 @@ import axios from "axios";
 import Movies from "../components/Movies.jsx";
 import styled from "styled-components";
 import Spinner from '../components/Loading.jsx';
+import Navbar from '../components/Navbar.jsx';
 
-const NowPlayingPage = () => {
+const TopRatedPage = () => {
   const [movieData, setMovieData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const options = {
       method: 'GET',
-      url: 'https://api.themoviedb.org/3/movie/now_playing',
+      url: 'https://api.themoviedb.org/3/movie/top_rated',
       headers: {
         accept: 'application/json',
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0YzAwOTA4NGIyNTY1ZmFmNzYxNDFmNGJhMmYyZGZlZiIsInN1YiI6IjY2Mzc3MTY4YzYxNmFjMDEyMjFiMDhmZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.L-DcguU9teC_FIkbPEMCSCq08miKo9TGUZwwb7VgmhE'
@@ -30,6 +31,7 @@ const NowPlayingPage = () => {
   }, [])
   return (
     <div>
+      <Navbar/>
       {isLoading ? (
         <Spinner /> // Render Loading component if isLoading is true
       ) : (
@@ -43,7 +45,7 @@ const NowPlayingPage = () => {
   );
 };
 
-export default NowPlayingPage;
+export default TopRatedPage;
 
 const MovieContainer = styled.div`
   display: flex;

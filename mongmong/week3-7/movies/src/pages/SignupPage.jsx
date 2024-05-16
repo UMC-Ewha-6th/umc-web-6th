@@ -2,10 +2,13 @@ import React, { useEffect } from 'react';
 import styled from "styled-components";
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Navbar from '../components/Navbar';
 
 const SignupPage = () => {
   const navigate = useNavigate();
   const [isName, setisName] = useState(false);
+  const [isID, setisID] = useState(false);
   const [isEmail, setisEmail] = useState(false);
   const [isAge, setisAge] = useState(false);
   const [ageText, setAgeText] = useState('');
@@ -14,12 +17,14 @@ const SignupPage = () => {
   const [isPWA, setisPWA] = useState(false);
   const [PWAText, setPWAText] = useState('');
   const [password, setpassword] = useState('');
+  
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    age: '',
-    password: '',
-    passwordcheck: '',
+    name: "",
+    email: "",
+    age: "",
+    username: "",
+    password: "",
+    passwordCheck: "",
   });
   const [isEnable, setisEnable] = useState(false);
 
@@ -30,48 +35,71 @@ const SignupPage = () => {
 
   const checkFormValidity = () => {
     // Check all form fields for validity
-    const isValid = !isName && !isEmail && !isAge && !isPW && !isPWA &&
-      formData.name !== "" && formData.email !== "" && formData.age !== "" &&
-      formData.password !== "" && formData.passwordcheck !== "" &&
-      formData.password === formData.passwordcheck;
+    const isValid = !isName && !isID && !isEmail && !isAge && !isPW && !isPWA &&
+      formData.name !== "" && formData.username !== "" && formData.email !== "" && formData.age !== "" &&
+      formData.password !== "" && formData.passwordCheck !== "" &&
+      formData.password === formData.passwordCheck;
 
     // Update isEnable state based on form validity
     setisEnable(isValid);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     if (isEnable) {
       event.preventDefault();
       // formData에서 결합된 값을 가져옴
+      
       console.log(formData);
+      // console.log(password);
       // API 호출 등 추가 작업 수행
-      alert("회원가입에 성공했습니다.");
-      navigate(`/`);
+      try {
+        const response = await axios.post('http://localhost:8080/auth/signup', formData);
+        console.log('Response:', response.data);
+        alert("회원가입에 성공했습니다.");
+        navigate(`/login`);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     } else {
       alert("다시 시도해주세요");
     }
   };
 
   function containsAllTypes(inputString) {
-    const hasLetter = /[a-zA-Z]/.test(inputString);
+    const hasBigLetter = /[A-Z]/.test(inputString);
+    const hasSmallLetter = /[a-z]/.test(inputString);
     const hasNumber = /\d/.test(inputString);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(inputString);
 
-    return hasLetter && hasNumber && hasSpecialChar;
+    return hasBigLetter && hasSmallLetter && hasNumber && hasSpecialChar;
   }
 
   const checkName = (event) => {
-      setFormData({ ...formData, name: event.target.value });
+      setFormData({ ...formData, name: event.target.value.toString() });
       setisName(event.target.value == "");
   }
 
+  const checkID = (event) => {
+    setFormData({ ...formData, username: event.target.value.toString() });
+    if (event.target.value.length < 5){
+      setisID(true);
+    }
+    else
+    {
+      setisID(false);
+    }
+  }
+
   const checkEmail = (event) => {
-    setFormData({ ...formData, email: event.target.value });
+    console.log(event.target.value.toString());
+    setFormData({ ...formData, email: event.target.value.toString() });
+    // console.log(formData);
     setisEmail(!/@/.test(event.target.value));
   }
 
   const checkAge = (event) => {
-    setFormData({ ...formData, age: event.target.value });
+    setFormData({ ...formData, age: event.target.value.toString() });
+    // console.log(formData);
     if (event.target.value == ""){
       setAgeText("나이를 입력해주세요!");
       setisAge(true);
@@ -99,7 +127,8 @@ const SignupPage = () => {
   }
 
   const checkPW = (event) => {
-    setFormData({ ...formData, password: event.target.value });
+    setFormData({ ...formData, password: event.target.value.toString() });
+    // console.log(formData);
     setpassword(event.target.value);
     if (event.target.value == ""){
       setPWText("비밀번호를 입력해주세요!");
@@ -114,7 +143,7 @@ const SignupPage = () => {
       setisPW(true);
     }
     else if (!containsAllTypes(event.target.value)){
-      setPWText("비밀번호는 영어, 숫자, 특수문자를 모두 조합해서 비밀번호를 작성해야 합니다.");
+      setPWText("비밀번호는 대소문자, 숫자, 특수문자를 모두 조합해서 비밀번호를 작성해야 합니다.");
       setisPW(true);
     }
     else{
@@ -123,7 +152,7 @@ const SignupPage = () => {
   }
 
   const checkPWA = (event) => {
-    setFormData({ ...formData, passwordcheck: event.target.value });
+    setFormData({ ...formData, passwordCheck: event.target.value.toString() });
     if (event.target.value == ""){
       setPWAText("비밀번호를 다시 입력해주세요!");
       setisPWA(true);
@@ -140,12 +169,17 @@ const SignupPage = () => {
 
   return (
       <SearchContainer>
+        <Navbar/>
         <SearchText>회원가입 페이지</SearchText>
         <FormBox>
         <Form onSubmit={handleSubmit}>
           <SearchInput name="name" value={formData.name} placeholder='이름을 입력해주세요' onChange={checkName}/>
           {isName && (
             <WrongText>이름을 입력해주세요!</WrongText>
+          )}
+          <SearchInput name="id" value={formData.username} placeholder='아이디를 입력해주세요' onChange={checkID}/>
+          {isID && (
+            <WrongText>아이디는 최소 5자리 이상 입력해주세요!</WrongText>
           )}
           <SearchInput name="email" value={formData.email} placeholder='이메일을 입력해주세요' onChange={checkEmail}/>
           {isEmail && (
@@ -159,23 +193,47 @@ const SignupPage = () => {
           {isPW && (
             <WrongText>{PWText}</WrongText>
           )}
-          <SearchInput type="password" name="passwordcheck" value={formData.passwordcheck}placeholder='비밀번호 확인' onChange={checkPWA}/>
+          <SearchInput type="password" name="passwordcheck" value={formData.passwordCheck}placeholder='비밀번호 확인' onChange={checkPWA}/>
           {isPWA && (
             <WrongText>{PWAText}</WrongText>
           )}
-          <Submit style={{ backgroundColor: isEnable ? 'yellow' : 'lightgrey' }} disabled={!isEnable} type='submit'>제출하기</Submit>
+          <Submit style={{ backgroundColor: isEnable ? 'gold' : 'lightgrey' }} disabled={!isEnable} type='submit'>제출하기</Submit>
+          <TextContainer>
+            <Text>이미 아이디가 있으신가요?</Text>
+            <BoldText onClick={()=> navigate(`/login`)}>로그인 페이지로 이동하기</BoldText>
+          </TextContainer>
         </Form>
         </FormBox>
       </SearchContainer>
+      
 
   );
 };
 
 export default SignupPage;
 
+const TextContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+`;
+
+const Text = styled.p`
+  color: white;
+  font-size: 14px;
+`;
+
+const BoldText = styled.p`
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
 const FormBox = styled.div`
 justify-content: center;
   align-items: center;
+  margin-bottom: 280px;
 `
 
 const Form = styled.form`
@@ -226,12 +284,11 @@ const SearchInput = styled.input`
   margin-top: 15px;
 `
 const Submit = styled.button`
-margin-top: 20px;
+margin-top: 40px;
 width: 390px;
 height: 35px;
 border-radius: 20px;
 border: none;
 cursor:pointer;
 font-weight: bold;
-margin-bottom: 280px;
 `

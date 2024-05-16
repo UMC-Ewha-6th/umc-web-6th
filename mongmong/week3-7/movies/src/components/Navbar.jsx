@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -11,16 +12,32 @@ const Navbar = () => {
     navigate(`/`);
   }
 
-  // 로그인 또는 로그아웃 버튼을 클릭할 때 상태를 변경하는 함수
-  const toggleLoginStatus = () => {
-    setIsLoggedIn(!isLoggedIn);
+  const logOut = () => {
+    localStorage.removeItem('token');
+    window.location.reload();
   }
+
+  useEffect(() => {
+    if (localStorage.getItem('token') != null){
+      setIsLoggedIn(true);
+    }
+    else{
+      setIsLoggedIn(false);
+    }
+  }, []);
+
 
   return (
     <HeaderContainer>
       <LogoTitle onClick={goMain}>UMC Movie</LogoTitle>
       <MoveCategory>
-        <CategoryTitle onClick={() => navigate(`/signup`)}>회원가입</CategoryTitle>
+        { isLoggedIn ?
+        <CategoryTitle onClick={() => logOut()}>로그아웃</CategoryTitle> :
+        <div>
+          <CategoryTitle onClick={() => navigate(`/login`)}>로그인</CategoryTitle>
+          <CategoryTitle onClick={() => navigate(`/signup`)}>회원가입</CategoryTitle>
+        </div>
+        }
         <CategoryTitle onClick={() => navigate(`/popular`)}>Popular</CategoryTitle>
         <CategoryTitle onClick={() => navigate(`/nowplaying`)}>Now Playing</CategoryTitle>
         <CategoryTitle onClick={() => navigate(`/toprated`)}>Top Rated</CategoryTitle>

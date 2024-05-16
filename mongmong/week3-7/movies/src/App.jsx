@@ -12,15 +12,17 @@ import NotFound from "./pages/NotFound.jsx";
 import styled from "styled-components";
 import MovieDetail from "./pages/MovieDetail.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
 
 function App() {
   return (
     <>
-      <Navbar/>
+      {/* <Navbar/> */}
       <Container>
         <Routes>
           <Route path="/" element={<MainPage/>}/>
           <Route path="/signup" element={<SignupPage/>}/>
+          <Route path="/login" element={<LoginPage/>}/>
           <Route path="/popular" element={<PopularPage/>}/>
           <Route path="/nowplaying" element={<NowPlayingPage/>}/>
           <Route path="/toprated" element={<TopRatedPage/>}/>
