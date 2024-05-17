@@ -10,32 +10,32 @@ const NowPlayingPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [pagenum, setPageNum] = useState(1);
 
-  const fetchData = async () => {
-    setIsLoading(true);
-    const options = {
-      method: 'GET',
-      url: 'https://api.themoviedb.org/3/movie/now_playing',
-      params: { language: 'en-US', page: pagenum },
-      headers: {
-        accept: 'application/json',
+  
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const options = {
+        method: 'GET',
+        url: 'https://api.themoviedb.org/3/movie/now_playing',
+        params: { language: 'en-US', page: pagenum },
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0YzAwOTA4NGIyNTY1ZmFmNzYxNDFmNGJhMmYyZGZlZiIsInN1YiI6IjY2Mzc3MTY4YzYxNmFjMDEyMjFiMDhmZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.L-DcguU9teC_FIkbPEMCSCq08miKo9TGUZwwb7VgmhE'
+        }
+      };
+      try {
+        const response = await axios.request(options);
+        setMovieData(prevData => [...prevData, ...response.data.results]);
+        setPageNum(prevPageNum => prevPageNum + 1);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
       }
     };
-    try {
-      const response = await axios.request(options);
-      setMovieData(prevData => [...prevData, ...response.data.results]);
-      setPageNum(prevPageNum => prevPageNum + 1);
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData(); // Fetch initial data
-  }, []); // Empty dependency array ensures it runs only once after initial render
-
-  useEffect(() => {
+    
     const handleScroll = () => {
       if (
         (window.innerHeight + document.documentElement.scrollTop) ===
