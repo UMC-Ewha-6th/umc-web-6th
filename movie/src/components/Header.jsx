@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -26,6 +26,14 @@ const NavLink = styled(Link)`
   color: white;
 `;
 
+const Logout = styled.div`
+  color: #e5b409;
+  cursor: pointer;
+  &:hover {
+    font-size: 15px;
+  }
+`;
+
 const Lists = styled.div`
   font-size: 14px;
   display: flex;
@@ -36,7 +44,18 @@ const Lists = styled.div`
   }
 `;
 export default function Header() {
-  const [isClicked, setIsClicked] = useState(false);
+  const [isLogin, setIsLogin] = useState(window.localStorage.getItem('token'));
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('token');
+    setIsLogin(token);
+  }, []);
+
+  const onClick = () => {
+    localStorage.removeItem('token');
+    window.location.reload();
+    setIsLogin(false);
+  };
 
   return (
     <Container>
@@ -44,7 +63,14 @@ export default function Header() {
         <NavLink to="/">UMC Movie</NavLink>
       </Logo>
       <Lists>
-        <NavLink to="/join">회원가입</NavLink>
+        {isLogin ? (
+          <Logout onClick={onClick}>로그아웃</Logout>
+        ) : (
+          <>
+            <NavLink to="/login">로그인</NavLink>
+            <NavLink to="/join">회원가입</NavLink>
+          </>
+        )}
         <NavLink to="/popular">Popular</NavLink>
         <NavLink to="/nowplaying">Now Playing</NavLink>
         <NavLink to="/toprated">Top rated</NavLink>

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getMovieList } from '../apis/Movie';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import MovieBox from '../components/MovieBox';
+import { getAuth } from '../apis/Join';
 
 const Container = styled.div`
   color: white;
@@ -100,9 +101,13 @@ const Loading = styled.div`
 `;
 
 export default function MainPage() {
+  const token = JSON.parse(window.localStorage.getItem('token'));
+
   const [search, setSearch] = useState('');
   const [movieList, setMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [storedToken, setStoredToken] = useState(token);
+  const [profile, setProfile] = useState('');
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -130,10 +135,37 @@ export default function MainPage() {
     setSearch(e.target.value);
   };
 
+  const getAuthInfo = useMutation(getAuth, {
+    onSuccess: data => {
+      console.log(data);
+      setProfile(data.username + '님');
+    },
+    onError: error => {
+      console.log(error);
+    },
+  });
+
+  function handleStorageChange() {
+    const token = window.localStorage.getItem('token');
+    setStoredToken(token);
+  }
+
+  useEffect(() => {
+    handleStorageChange();
+  }, []);
+
+  useEffect(() => {
+    if (storedToken == null) {
+      setProfile('');
+    }
+    getAuthInfo.mutate(storedToken);
+    console.log(storedToken);
+  }, [storedToken]);
+
   return (
     <Container>
       <Banner>
-        <div>환영합니다</div>
+        <div>{profile} 환영합니다</div>
       </Banner>
       <Box>
         <Title>📽️Find your movies!</Title>

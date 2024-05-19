@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useMutation } from 'react-query';
 import styled from 'styled-components';
+import { postLogin } from '../apis/Join';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   color: white;
@@ -9,6 +12,13 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 17px;
+`;
+
+const Part = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 `;
 
 const Title = styled.div`
@@ -34,7 +44,7 @@ const Btn = styled.input`
   height: 45px;
   border: transparent;
   border-radius: 22px;
-  background-color: white;
+  background-color: ${props => (props.$isValid ? '#e5b409' : 'white')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,6 +55,12 @@ const Btn = styled.input`
   cursor: pointer;
 `;
 
+const ShowMsg = styled.div`
+  width: 445px;
+  font-size: 12px;
+  color: ${props => (props.$isError ? 'green' : 'red')};
+`;
+
 const InputBox = ({ placeholder, type, value, setValue }) => {
   const inputChange = e => {
     setValue(e.target.value);
@@ -53,19 +69,104 @@ const InputBox = ({ placeholder, type, value, setValue }) => {
 };
 
 export default function LoginPage() {
+  //기본
   const [id, setId] = useState('');
   const [pwd, setPwd] = useState('');
 
+  //유효성 여부
+  const [isId, setIsId] = useState(false);
+  const [isPwd, setIsPwd] = useState(false);
+
+  //에러 메시지
+  const [idMsg, setIdMsg] = useState('');
+  const [pwdMsg, setPwdMsg] = useState('');
+
+  //버튼 색
+  const [isValid, setIsValid] = useState(false);
+
+  //유효성 검사
+  //아이디
+  const isValidId = id => {
+    const re = /^[a-z]+[a-z0-9]{5,19}$/g;
+    if (id !== '') {
+      if (re.test(id)) {
+        setIdMsg('올바른 아이디 형식입니다!');
+        setIsId(true);
+      } else {
+        setIdMsg('올바른 아이디 형식이 아닙니다!');
+        setIsId(false);
+        setIsValid(false);
+      }
+    } else {
+      setIdMsg('아이디를 입력해주세요!');
+      setIsId(false);
+      setIsValid(false);
+    }
+  };
+
+  //비밀번호
+  const isValidPwd = pwd => {
+    const re = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{4,12}$/;
+    if (pwd !== '') {
+      if (re.test(pwd)) {
+        setPwdMsg('올바른 비밀번호입니다!');
+        setIsPwd(true);
+      } else {
+        setPwdMsg('올바른 비밀번호가 아닙니다!');
+        setIsPwd(false);
+        setIsValid(false);
+      }
+    } else {
+      setPwdMsg('비밀번호를 입력해주세요!');
+      setIsPwd(false);
+      setIsValid(false);
+    }
+  };
+
+  useEffect(() => {
+    isValidId(id);
+    isValidPwd(pwd);
+  }, [id, pwd]);
+
+  useEffect(() => {
+    if (isId && isPwd) {
+      setIsValid(true);
+    }
+  }, [isId, isPwd]);
+
+  const formData = {
+    username: id,
+    password: pwd,
+  };
+
+  const navigate = useNavigate();
+
+  const postLoginQuery = useMutation(postLogin, {
+    onSuccess: data => {
+      console.log(data);
+      window.localStorage.setItem('token', JSON.stringify(data.token));
+      navigate('/');
+      window.location.reload();
+    },
+  });
+
   const onClickBtn = e => {
     e.preventDefault();
+    postLoginQuery.mutate({ formData: formData });
   };
 
   return (
     <Container>
       <Title>로그인 페이지</Title>
-      <InputBox placeholder="아이디" value={id} setValue={setId} type="text" />
-      <InputBox placeholder="비밀번호" value={pwd} setValue={setPwd} type="password" />
-      <Btn type="submit" onClick={onClickBtn} value={'제출하기'} />
+      <Part>
+        <InputBox placeholder="아이디" value={id} setValue={setId} type="text" />
+        <ShowMsg $isError={isId}>{idMsg}</ShowMsg>
+      </Part>
+      <Part>
+        <InputBox placeholder="비밀번호" value={pwd} setValue={setPwd} type="password" />
+        <ShowMsg $isError={isPwd}>{pwdMsg}</ShowMsg>
+      </Part>
+      <Btn type="submit" onClick={onClickBtn} value={'제출하기'} $isValid={isValid} />
     </Container>
   );
 }
