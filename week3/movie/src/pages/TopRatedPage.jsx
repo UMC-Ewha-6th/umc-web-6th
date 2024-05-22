@@ -11,11 +11,34 @@ const Popular = () => {
   const [movies, setMovies] = useState([]);
 
   const getMovies = async () => {
-    const json = await (
-      await fetch(`${URL}top_rated?api_key=${API_KEY}`)
-    ).json();
-    setMovies(json.results);
-    setLoading(false);
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1`,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMzE0OTMyMGY2MWM0ZTljYTY3MjM5ZTA2OGQ4MDI4ZCIsInN1YiI6IjY2MzMyMGI5OTlkNWMzMDEyNjU2OTJjYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KBYeoId4cpixWOlGWUpsZs48qmPvniJhUsOhlmxL8dg",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("데이터를 불러올 수 없습니다."); // 에러 처리
+      }
+
+      const data = await response.json();
+      setMovies(data.results);
+    } catch (error) {
+      setError(error.message); // 에러 메시지 설정
+    } finally {
+      setLoading(false); // 데이터 요청 완료 시 로딩 상태 해제
+    }
+    // const json = await (
+    //   await fetch(`${URL}top_rated?api_key=${API_KEY}`)
+    // ).json();
+    // setMovies(json.results);
+    // setLoading(false);
   };
 
   useEffect(() => {

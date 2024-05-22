@@ -1,9 +1,11 @@
 import styled from "styled-components";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
+import axios from "axios";
 
 const Signup = () => {
   const [name, setName] = React.useState("");
+  const [id, setId] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [passwordConfirm, setPasswordConfirm] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -11,19 +13,23 @@ const Signup = () => {
 
   // 오류메세지 상태 저장
   const [nameMessage, setNameMessage] = React.useState("");
+  const [idMessage, setIdMessage] = React.useState("");
   const [passwordMessage, setPasswordMessage] = React.useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] =
     React.useState("");
   const [emailMessage, setEmailMessage] = React.useState("");
   const [birthMessage, setBirthMessage] = React.useState("");
+  const [serverErrorMessage, setServerErrorMessage] = React.useState(""); // 서버 에러 메시지 상태 변수
 
   // 유효성 검사
   const [isName, setIsName] = React.useState(false);
+  const [isId, setIsId] = React.useState(false);
   const [isPassword, setIsPassword] = React.useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = React.useState(false);
   const [isEmail, setIsEmail] = React.useState(false);
   const [isBirth, setIsBirth] = React.useState(false);
 
+  //이름 입력 유효성 검사
   const onChangeName = (e) => {
     const currentName = e.target.value;
     setName(currentName);
@@ -40,10 +46,31 @@ const Signup = () => {
     }
   };
 
+  //아이디 입력 유효성 검사
+  const onChangeId = (e) => {
+    const currentId = e.target.value;
+    setId(currentId);
+
+    const idRegExp = /^[A-Za-z0-9]+$/;
+    const isIdRegExp = idRegExp.test(currentId);
+
+    if (currentId.length < 5) {
+      setIdMessage("아이디는 최소 5자리 이상으로 구성해주세요!");
+      setIsId(false);
+    } else if (!isIdRegExp) {
+      setIdMessage("아이디는 알파벳과 숫자의 조합으로 작성해주세요!");
+      setIsId(false);
+    } else {
+      setIdMessage("");
+      setIsId(true);
+    }
+  };
+
+  //이메일 입력 유효성 검사
   const onChangeEmail = (e) => {
     const currentEmail = e.target.value;
     setEmail(currentEmail);
-    const emailRegExp = /^[A-Za-z0-9]*[@][A-Za-z0-9]*$/;
+    const emailRegExp = /^[A-Za-z0-9]*[@][A-Za-z0-9.]*$/;
 
     if (!emailRegExp.test(currentEmail)) {
       setEmailMessage("이메일의 형식이 올바르지 않습니다!");
@@ -54,41 +81,7 @@ const Signup = () => {
     }
   };
 
-  const onChangePassword = (e) => {
-    const currentPassword = e.target.value;
-    setPassword(currentPassword);
-    const passwordRegExp =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{4,12}$/;
-
-    if (currentPassword.length < 4) {
-      setPasswordMessage("비밀번호는 최소 4자리 이상이어야 합니다.");
-      setIsPassword(false);
-    } else if (currentPassword.length > 12) {
-      setPasswordMessage("비밀번호는 최대 12자리까지 가능합니다.");
-      setIsPassword(false);
-    } else if (!passwordRegExp.test(currentPassword)) {
-      setPasswordMessage(
-        "영어, 숫자, 특수문자를 모두 조합해서 비밀번호를 작성해야 합니다."
-      );
-      setIsPassword(false);
-    } else {
-      setPasswordMessage("");
-      setIsPassword(true);
-    }
-  };
-
-  const onChangePasswordConfirm = (e) => {
-    const currentPasswordConfirm = e.target.value;
-    setPasswordConfirm(currentPasswordConfirm);
-    if (password !== currentPasswordConfirm) {
-      setPasswordConfirmMessage("비밀번호가 일치하지 않습니다.");
-      setIsPasswordConfirm(false);
-    } else {
-      setPasswordConfirmMessage("");
-      setIsPasswordConfirm(true);
-    }
-  };
-
+  // 나이 입력 유효성 검사
   const onChangeBirth = (e) => {
     const currentBirth = e.target.value;
     setBirth(currentBirth);
@@ -112,27 +105,80 @@ const Signup = () => {
     }
   };
 
+  //비밀번호 입력 유효성 검사
+  const onChangePassword = (e) => {
+    const currentPassword = e.target.value;
+    setPassword(currentPassword);
+    const passwordRegExp =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{4,12}$/;
+
+    if (currentPassword.length < 4) {
+      setPasswordMessage("비밀번호는 최소 4자리 이상이어야 합니다.");
+      setIsPassword(false);
+    } else if (currentPassword.length > 12) {
+      setPasswordMessage("비밀번호는 최대 12자리까지 가능합니다.");
+      setIsPassword(false);
+    } else if (!passwordRegExp.test(currentPassword)) {
+      setPasswordMessage(
+        "영어, 숫자, 특수문자를 모두 조합해서 비밀번호를 작성해야 합니다."
+      );
+      setIsPassword(false);
+    } else {
+      setPasswordMessage("");
+      setIsPassword(true);
+    }
+  };
+
+  //비밀번호 확인 유효성 검사
+  const onChangePasswordConfirm = (e) => {
+    const currentPasswordConfirm = e.target.value;
+    setPasswordConfirm(currentPasswordConfirm);
+    if (password !== currentPasswordConfirm) {
+      setPasswordConfirmMessage("비밀번호가 일치하지 않습니다.");
+      setIsPasswordConfirm(false);
+    } else {
+      setPasswordConfirmMessage("");
+      setIsPasswordConfirm(true);
+    }
+  };
+
   const navigate = useNavigate();
 
-  const onSubmit = (e) => {
-    e.preventDefault(); // 기본 제출 동작 방지
-    if (isName && isEmail && isBirth && isPassword && isPasswordConfirm) {
-      // 모든 유효성 검사가 통과할 경우에만 제출
-      console.log("회원가입 정보:", {
-        name,
-        email,
-        birth,
-        password,
-        passwordConfirm,
-      });
-      alert("회원가입이 성공했습니다!");
-      navigate("/");
-      // 여기에 회원가입을 서버로 보내는 로직을 추가할 수 있습니다.
+  // Signup 컴포넌트 내의 onSubmit 함수 수정
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      isName &&
+      isId &&
+      isEmail &&
+      isBirth &&
+      isPassword &&
+      isPasswordConfirm
+    ) {
+      try {
+        const response = await axios.post("http://localhost:8080/auth/signup", {
+          name: name,
+          username: id, // username으로 수정
+          email: email,
+          age: birth,
+          password: password,
+          passwordCheck: passwordConfirm, // passwordCheck로 수정
+        });
+        alert("회원가입이 성공했습니다!");
+        navigate("/login");
+      } catch (error) {
+        if (error.response && error.response.data) {
+          console.error("서버 응답 메시지:", error.response.data.message);
+        } else {
+          console.error("회원가입 오류:", error);
+        }
+        alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+      }
     } else {
-      // 유효성 검사를 통과하지 못한 경우 에러 메시지를 표시
       alert("입력 정보를 확인해주세요!");
     }
   };
+
   return (
     <Container>
       <SignupForm method="POST" id="signupForm" action="/">
@@ -143,7 +189,12 @@ const Signup = () => {
           onChange={onChangeName}
         />
         {nameMessage && <ErrorMessage>{nameMessage}</ErrorMessage>}
-
+        <SignupInput
+          placeholder="아이디를 입력해주세요"
+          value={id}
+          onChange={onChangeId}
+        />
+        {idMessage && <ErrorMessage>{idMessage}</ErrorMessage>}
         <SignupInput
           placeholder="이메일을 입력해주세요"
           value={email}
@@ -172,6 +223,9 @@ const Signup = () => {
         {passwordConfirmMessage && (
           <ErrorMessage>{passwordConfirmMessage}</ErrorMessage>
         )}
+        {serverErrorMessage && (
+          <ErrorMessage>{serverErrorMessage}</ErrorMessage>
+        )}
         <SubmitButton
           onClick={onSubmit}
           disabled={
@@ -180,6 +234,10 @@ const Signup = () => {
         >
           제출하기
         </SubmitButton>
+        <LoginWrapper>
+          <LoginText>이미 아이디가 있으신가요?</LoginText>
+          <Login to="/login">로그인 페이지로 이동하기</Login>
+        </LoginWrapper>
       </SignupForm>
     </Container>
   );
@@ -200,21 +258,25 @@ const SignupForm = styled.form`
   flex-direction: column;
   margin: 0 auto; /* 좌우 여백을 자동으로 설정하여 가운데 정렬합니다. */
   padding: 16px; /* 위아래 여백을 추가합니다. */
-  padding-top: 120px;
+  padding-top: 80px;
   justify-content: center;
   align-items: center;
-  width: 50vw;
+  width: 45vw;
+  max-width: 450px;
 `;
 
 const SignupTitle = styled.h2`
   color: white;
+  font-size: 18px;
+  margin: 11px 0px 15px 0px;
+  font-weight: bold;
 `;
 
 const SignupInput = styled.input`
   box-sizing: border-box;
-  height: 50px;
+  height: 45px;
   width: 100%;
-  margin: 15px 0px 15px 0px;
+  margin: 11px 0px 11px 0px;
   border-radius: 40px;
   &::placeholder {
     color: gray;
@@ -232,4 +294,20 @@ const SubmitButton = styled.button`
 const ErrorMessage = styled.p`
   color: red;
   text-align: left;
+`;
+const LoginWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+`;
+
+const LoginText = styled.p`
+  font-size: small;
+  color: white;
+`;
+const Login = styled(NavLink)`
+  font-size: small;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
 `;

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+import Credit from "../components/Credit";
 
 const baseUrl = "https://image.tmdb.org/t/p/w200";
+const castBaseUrl = "https://image.tmdb.org/t/p/w500";
 
 const MovieDetail = () => {
   const { state } = useLocation();
@@ -67,25 +69,23 @@ const MovieDetail = () => {
         </DetailInfo>
       </DetailContainer>
 
-      <DetailContainer>
+      <CreditContainer>
         {isLoading ? (
           <LoadingMessage>데이터를 받아오는 중 입니다...</LoadingMessage>
         ) : error ? (
           <ErrorMessage>{error}</ErrorMessage>
         ) : creditResult && creditResult.length > 0 ? (
           creditResult.map((cast) => (
-            <ActorContainer>
-              {cast.profile_path && ( // 배우의 프로필 이미지가 있는 경우에만 출력
-                <ActorImage src={baseUrl + cast.profile_path} alt={cast.name} />
-              )}
-              <ActorName>{cast.name}</ActorName> {/* 배우의 이름 출력 */}
-            </ActorContainer>
+            <Credit
+              key={cast.id}
+              name={cast.name}
+              profile_path={cast.profile_path}
+            />
           ))
         ) : (
           <NoResultMessage></NoResultMessage>
         )}
-      </DetailContainer>
-      <></>
+      </CreditContainer>
     </>
   );
 };
@@ -94,14 +94,23 @@ export default MovieDetail;
 const ActorName = styled.p`
   color: white;
 `;
-const ActorContainer = styled.div``;
+const CreditWrapper = styled.div`
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+`;
 const ActorImage = styled.div`
-  height: 20px;
-  width: 20px;
+  height: 50px;
+  width: auto;
 `;
 const CreditContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  padding: 50px;
+  justify-content: space-between;
+  margin: 0 auto;
 `;
 const Background = styled.div`
   background-image: url(${(props) => props.poster});
@@ -125,7 +134,7 @@ const DetailContainer = styled.div`
   height: 60vh;
   padding: 50px;
   padding-top: 150px;
-  padding-bottom: 30px;
+  padding-bottom: 150px;
   align-items: center;
   overflow: hidden;
 `;
