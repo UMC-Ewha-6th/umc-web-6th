@@ -1,15 +1,47 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // axios 추가
 
 const MainPage = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [showResult, setShowResult] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
-  const [error, setError] = useState(null); // 에러 상태 추가
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [userName, setUserName] = useState("");
+  const [isUserLoading, setIsUserLoading] = useState(true);
+
   const navigate = useNavigate();
 
+  ///////////////////사용자 정보 가져오기///////////////////////////
+  const fetchUserData = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsUserLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/auth/me",
+          config
+        );
+        setUserName(response.data.name);
+      } catch (error) {
+        setError("유저 정보를 불러올 수 없습니다.");
+      }
+      setIsUserLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  ////////////////////////////검색//////////////////////////////
   const searchInputChange = (e) => {
     setSearch(e.target.value);
   };
@@ -22,7 +54,7 @@ const MainPage = () => {
     }
 
     const fetchSearchResult = async () => {
-      setIsLoading(true); // 데이터 요청 시작 시 로딩 상태 설정
+      setIsLoading(true);
 
       try {
         const response = await fetch(
@@ -37,16 +69,16 @@ const MainPage = () => {
         );
 
         if (!response.ok) {
-          throw new Error("데이터를 불러올 수 없습니다."); // 에러 처리
+          throw new Error("데이터를 불러올 수 없습니다.");
         }
 
         const data = await response.json();
         setSearchResult(data.results);
         setShowResult(true);
       } catch (error) {
-        setError(error.message); // 에러 메시지 설정
+        setError(error.message);
       } finally {
-        setIsLoading(false); // 데이터 요청 완료 시 로딩 상태 해제
+        setIsLoading(false);
       }
     };
 
@@ -65,7 +97,9 @@ const MainPage = () => {
     <Container>
       <MainContent>
         <MessageContainer>
-          <Message>환영합니다</Message>
+          <Message>
+            {userName ? `${userName}님 환영합니다!` : "환영합니다!"}
+          </Message>
         </MessageContainer>
         <SearchContainer>
           <Message>🎥Find Your Movies !</Message>
@@ -74,12 +108,13 @@ const MainPage = () => {
               type="text"
               value={search}
               onChange={searchInputChange}
+              placeholder="영화를 검색하세요..."
             />
-            {isLoading ? ( // 로딩 중이면 로딩 메시지 표시
+            {isLoading ? (
               <LoadingMessage>데이터를 받아오는 중 입니다...</LoadingMessage>
-            ) : error ? ( // 에러 발생 시 에러 메시지 표시
+            ) : error ? (
               <ErrorMessage>{error}</ErrorMessage>
-            ) : showResult && searchResult.length > 0 ? ( // 데이터가 있으면 결과 표시
+            ) : showResult && searchResult.length > 0 ? (
               <SearchResult>
                 {searchResult.map((movie) => (
                   <StyledMovie
@@ -114,7 +149,7 @@ const MainPage = () => {
                 ))}
               </SearchResult>
             ) : (
-              <NoResultMessage></NoResultMessage>
+              <NoResultMessage>검색 결과가 없습니다.</NoResultMessage>
             )}
           </Search>
         </SearchContainer>

@@ -19,11 +19,11 @@ const NowPlaying = () => {
     try {
       setLoadingMore(true);
       const response = await fetch(
-        `${URL}now_playing?language=en-US&page=${page}`,
+        `https://api.themoviedb.org/3/movie/now_playing?page=${page}`,
         {
           headers: {
             accept: "application/json",
-            Authorization: `Bearer YOUR_BEARER_TOKEN_HERE`,
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMzE0OTMyMGY2MWM0ZTljYTY3MjM5ZTA2OGQ4MDI4ZCIsInN1YiI6IjY2MzMyMGI5OTlkNWMzMDEyNjU2OTJjYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KBYeoId4cpixWOlGWUpsZs48qmPvniJhUsOhlmxL8dg`,
           },
         }
       );

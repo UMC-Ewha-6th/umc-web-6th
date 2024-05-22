@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
@@ -12,6 +12,7 @@ const Login = () => {
 
   const [isId, setIsId] = React.useState(false);
   const [isPassword, setIsPassword] = React.useState(false);
+  const navigate = useNavigate();
 
   //아이디 입력 유효성 검사
   const onChangeId = (e) => {
@@ -69,6 +70,9 @@ const Login = () => {
           username: id, // 수정: 백엔드에서는 username으로 사용
           password: password,
         });
+        console.log("로그인 성공:", response.data);
+        localStorage.setItem("token", response.data.token);
+        console.log("이름:", response.data.username);
         alert("로그인 성공");
         navigate("/"); // 로그인 페이지로 이동
       } catch (error) {
@@ -130,7 +134,7 @@ const LoginForm = styled.form`
   justify-content: center;
   align-items: center;
   width: 45vw;
-  max-width: 550px;
+  max-width: 450px;
 `;
 
 const LoginTitle = styled.h2`
@@ -155,8 +159,16 @@ const LoginInput = styled.input`
 const SubmitButton = styled.button`
   height: 50px;
   width: 100%;
-  margin: 20px 0px 20px 0px;
+  margin: 20px 0px;
   border-radius: 40px;
+
+  :disabled {
+    background-color: gray; /* 비활성화 상태일 때 회색으로 설정 */
+  }
+
+  &:not(:disabled) {
+    background-color: #edcf3a;
+  }
 `;
 
 const ErrorMessage = styled.p`
