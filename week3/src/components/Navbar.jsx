@@ -1,33 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import axios from 'axios';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 관리하는 상태값
 
-  const goMain = () => {
-    navigate(`/`);
-  }
+  // 페이지 로드 시 localStorage에서 토큰을 읽어와서 로그인 상태를 설정
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
-  // 로그인 또는 로그아웃 버튼을 클릭할 때 상태를 변경하는 함수
-  // const toggleLoginStatus = () => {
-  //   setIsLoggedIn(!isLoggedIn);
-  // }
+
+  const handleLogout = () => {
+    // localStorage에서 토큰 제거
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    // 로그아웃 후 메인 페이지로 이동
+    navigate('/');
+  };
 
   return (
     <HeaderContainer>
-      <LogoTitle onClick={goMain}>UMC Movie</LogoTitle>
+      <LogoTitle onClick={() => navigate('/')}>UMC Movie</LogoTitle>
       <MoveCategory>
-        {/* 로그인 또는 로그아웃 버튼 */}
-        {/* <CategoryTitle onClick={toggleLoginStatus}>
-          {isLoggedIn ? "로그아웃" : "로그인"}
-        </CategoryTitle> */}
-        <CategoryTitle onClick={() => navigate(`/signup`)}>회원가입</CategoryTitle>
-        <CategoryTitle onClick={() => navigate(`/popular`)}>Popular</CategoryTitle>
-        <CategoryTitle onClick={() => navigate(`/nowplaying`)}>Now Playing</CategoryTitle>
-        <CategoryTitle onClick={() => navigate(`/toprated`)}>Top Rated</CategoryTitle>
-        <CategoryTitle onClick={() => navigate(`/upcoming`)}>Upcoming</CategoryTitle>
+        {isLoggedIn ? (
+          <>
+            <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+          </>
+        ) : (
+          <>
+            <CategoryLink to='/signup'>회원가입</CategoryLink>
+            <CategoryLink to='/login'>로그인</CategoryLink>
+          </>
+        )}
+        <CategoryLink to='/popular'>Popular</CategoryLink>
+        <CategoryLink to='/nowplaying'>Now Playing</CategoryLink>
+        <CategoryLink to='/toprated'>Top Rated</CategoryLink>
+        <CategoryLink to='/upcoming'>Upcoming</CategoryLink>
       </MoveCategory>
     </HeaderContainer>
   );
@@ -55,19 +71,35 @@ const LogoTitle = styled.p`
 
 const MoveCategory = styled.div`
   display: flex;
+  align-items: center;
 `
 
-const CategoryTitle = styled.button`
+const CategoryLink = styled(Link)`
   color: white;
   margin: 0 10px;
   font-size: 13px;
   cursor: pointer;
-  background: transparent;
-  border: none;
+  text-decoration: none;
 
   &:hover {
     font-size: 15px;
     color: gold;
     font-weight: bold;
+  }
+`
+
+const WelcomeMessage = styled.span`
+  color: white;
+  margin-right: 10px;
+`
+
+const LogoutButton = styled.button`
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: gold;
   }
 `

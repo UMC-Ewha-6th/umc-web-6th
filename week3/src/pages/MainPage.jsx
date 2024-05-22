@@ -1,14 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import Movies from "../components/Movies.jsx";
-
+import axios from 'axios';
 
 const MainPage = () => {
 
   const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태 추가
   const [searchResults, setSearchResults] = useState([]); // 검색 결과 상태 추가
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const [name, setName] = useState(''); // 사용자 이름 상태 추가
 
+  // 사용자 정보를 가져오는 함수
+  const fetchUserInfo = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        };
+        const response = await axios.get('http://localhost:8080/auth/me', config);
+        setName(response.data.name);
+      }
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
 
   // 검색어 입력 핸들러
   const handleSearchInputChange = (e) => {
@@ -55,7 +77,7 @@ const MainPage = () => {
   return (
     <MainContainer>
       <BannerContainer>
-        <TitleText>환영합니다</TitleText>
+        <TitleText>{name ? `${name}님 환영합니다!` : '환영합니다!'}</TitleText>
       </BannerContainer>
       <SearchContainer>
         <SearchText>📽 Find your movies️ !</SearchText>

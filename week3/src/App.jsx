@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound.jsx";
 import styled from "styled-components";
 import MovieDetail from './pages/MovieDetail';
 import SignUp from "./pages/SignUp.jsx";
+import Login from "./pages/Login.jsx";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="/toprated" element={<TopRatedPage />} />
           <Route path="/upcoming" element={<UpComing />} />
           <Route path="/moviedetail/:id" element={<MovieDetail/>}/>
+          <Route path="/login" element={<Login />}/>
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </Container>

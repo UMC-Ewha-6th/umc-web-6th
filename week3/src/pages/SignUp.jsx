@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import {Link, useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
+
 
 
 export default function Signup() {
   const [name, setName] = useState('');
+  const [id, setId] = useState('');
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
   const [password, setPassword] = useState('');
@@ -17,14 +20,24 @@ export default function Signup() {
 
   const navigate = useNavigate(); // useHistory 훅 가져오기
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => { // handleSubmit 함수를 비동기로 변경
     e.preventDefault();
-    console.log("전송된 데이터:", { name, email, age, password });
-    // 회원 가입 완료 안내를 alert 창으로 띄우기
-    alert("회원 가입이 완료되었습니다!");
-
-    navigate('/'); // 메인 페이지 경로로 이동
-
+    try {
+      const response = await axios.post('http://localhost:8080/auth/signup', { // 서버에 POST 요청 보내기
+        name: name,
+        email: email,
+        age: age,
+        username: id,
+        password: password,
+        passwordCheck: confirmPassword
+      });
+      console.log("회원가입 성공:", response.data);
+      alert("회원가입이 완료되었습니다!");
+      navigate('/login'); // 회원가입 성공 후 로그인 페이지로 이동
+    } catch (error) {
+      console.error("회원가입 실패:", error);
+      alert("회원가입에 실패했습니다.");
+    }
   };
 
   const handleNameChange = (e) => {
@@ -32,6 +45,12 @@ export default function Signup() {
     setName(value);
     setIsValidName(value.trim() !== ''); // 이름이 비어있지 않은지 확인
 };
+
+const handleIdChange = (e) => {
+  const value = e.target.value;
+  setId(value);
+  setIsValidConfirmPassword(value.trim() !== '');
+}
 
 const handleEmailChange = (e) => {
     const value = e.target.value;
@@ -86,6 +105,9 @@ const validatePassword = (password) => {
                     <Input type = "text" placeholder="이름을 입력해주세요." value = {name} onChange={handleNameChange} />
                 </Form>
                 <Form>
+                    <Input type = "text" placeholder="아이디를 입력해주세요." value = {id} onChange={handleIdChange} />
+                </Form>
+                <Form>
                     <Input type="email" placeholder="이메일을 입력해주세요." value = {email} onChange={handleEmailChange} />
                     {!isValidEmail && <Small>유효한 이메일을 입력해 주세요!</Small>}
                 </Form>
@@ -102,10 +124,10 @@ const validatePassword = (password) => {
                     {!isValidConfirmPassword && <Small>비밀번호가 일치하지 않습니다</Small>}                        
                 </Form>
                 <Button type="submit" disabled={!isValidName || !isValidEmail || !isValidAge || !isValidPassword || !isValidConfirmPassword} >제출하기</Button><br/><br/>
-            </form><br />
+            </form>
             <Login>
                 <span style={{marginRight: "30px"}}>이미 아이디가 있으신가요?</span>
-                <Link to='/signin' style={{textDecorationLine: "none", color:"inherit"}}>로그인 페이지로 이동하기</Link>
+                <Link to='/login' style={{textDecorationLine: "none", color:"inherit"}}>로그인 페이지로 이동하기</Link>
             </Login>
 
         </SignUp>
@@ -156,10 +178,12 @@ const Input = styled.input`
 const Button = styled.button`
   display: block;
   margin: 0 auto;
-  width: 400px;
+  width: 420px;
   height: 40px;
   border-radius: 30px;
   background-color: ${({ disabled }) => (disabled ? 'white' : '#FFD400')};
+  margin-top: 20px;
+  
 `;
 
 const Small = styled.small`
