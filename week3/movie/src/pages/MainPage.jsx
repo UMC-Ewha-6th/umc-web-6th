@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // axios 추가
 
@@ -11,6 +11,7 @@ const MainPage = () => {
   const [error, setError] = useState(null);
   const [userName, setUserName] = useState("");
   const [isUserLoading, setIsUserLoading] = useState(true);
+  const [isSearchHover, setIsSearchHover] = useState(false);
 
   const navigate = useNavigate();
 
@@ -81,14 +82,14 @@ const MainPage = () => {
         setIsLoading(false);
       }
     };
-
+    //검색 딜레이
     const delay = setTimeout(() => {
       fetchSearchResult();
     }, 500);
 
     return () => clearTimeout(delay);
   }, [search]);
-
+  //별점 반올림
   const getRoundedRating = (rating) => {
     return rating.toFixed(1);
   };
@@ -96,17 +97,18 @@ const MainPage = () => {
   return (
     <Container>
       <MainContent>
-        <MessageContainer>
+        <MessageContainer onMouseEnter={() => setIsSearchHover(false)}>
           <Message>
             {userName ? `${userName}님 환영합니다!` : "환영합니다!"}
           </Message>
         </MessageContainer>
-        <SearchContainer>
+        <SearchContainer isSearchHover={isSearchHover}>
           <Message>🎥Find Your Movies !</Message>
           <Search>
             <SearchInput
               type="text"
               value={search}
+              onClick={() => setIsSearchHover(true)}
               onChange={searchInputChange}
               placeholder="영화를 검색하세요..."
             />
@@ -149,7 +151,7 @@ const MainPage = () => {
                 ))}
               </SearchResult>
             ) : (
-              <NoResultMessage>검색 결과가 없습니다.</NoResultMessage>
+              <NoResultMessage></NoResultMessage>
             )}
           </Search>
         </SearchContainer>
@@ -168,6 +170,8 @@ const Container = styled.div`
   height: 100vh;
   padding-top: 60px;
   padding-bottom: 30px;
+  box-sizing: border-box;
+  overflow: hidden;
 `;
 
 const MainContent = styled.div`
@@ -200,6 +204,12 @@ const SearchContainer = styled.div`
   height: 40vh;
   background-color: #22254b;
   padding-top: 20px;
+  transition: transform 0.3s ease-in-out;
+  ${({ isSearchHover }) =>
+    isSearchHover &&
+    css`
+      transform: translateY(-18vh);
+    `}
 `;
 
 const SearchInput = styled.input`
@@ -221,7 +231,8 @@ const Search = styled.div`
 const SearchResult = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  max-height: 60vh;
+  max-height: 65vh;
+  gap: 10px;
   place-items: center;
   overflow-y: auto;
   padding: 0 16px;
@@ -230,7 +241,12 @@ const SearchResult = styled.div`
   border-radius: 5px;
 
   ::-webkit-scrollbar {
-    width: 5px;
+    width: 5px; /* Adjust the width as needed */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: yellow; /* Change color to yellow */
+    border-radius: 5px; /* Optional: Round the corners */
   }
 `;
 
