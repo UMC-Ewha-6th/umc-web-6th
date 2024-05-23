@@ -103,7 +103,7 @@ const MoveCategory = styled.div`
   transition: right 0.3s ease-in-out; /* Smooth transition */
   flex-direction: column; /* Vertical layout */
 
-  @media (min-width: 769px) {
+  @media (min-width: 768px) {
     display: flex; /* Show menu for screens larger than 768px */
     position: static;
     width: auto;
