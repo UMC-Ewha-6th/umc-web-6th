@@ -4,6 +4,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import StarRating from '../components/StarRating';
 import axios from "axios";
 import Casts from '../components/Casts';
+import Navbar from '../components/Navbar.jsx';
 
 const MovieDetail = () => {
   const { movie: selectedMovie } = useLocation().state;
@@ -37,6 +38,7 @@ const MovieDetail = () => {
   return (
     <div>
     <Container>
+    <Navbar/>
       <BackgroundPoster src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt={original_title} />
       <Poster src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt={original_title} />
       <Content>
@@ -78,11 +80,15 @@ export default MovieDetail;
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 50px;
   background-color: rgb(56, 58, 102);
   color: white;
+  @media (min-width: 768px) {
+    flex-direction: row; /* Row direction for larger screens */
+  }
 `;
 
 const BackgroundPoster = styled.img`
@@ -98,8 +104,12 @@ const Poster = styled.img`
   width: 300px;
   height: 450px;
   margin-right: 60px;
-  margin-bottom:200px;
+  margin-bottom:170px;
   z-index: 1;
+
+  @media (max-width: 768px) {
+    margin-right: 0px;
+  }
 `;
 
 const Content = styled.div`
@@ -156,6 +166,7 @@ color : white;
 text-align : center;
 font-weight : bold;
 font-size : 20px;
+background-color: rgb(56, 58, 102);
 `;
 
 export const Profile = styled.div`

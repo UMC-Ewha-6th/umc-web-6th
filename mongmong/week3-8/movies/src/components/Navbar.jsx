@@ -6,6 +6,11 @@ import axios from "axios";
 const Navbar = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 관리하는 상태값
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
   
 
   const goMain = () => {
@@ -30,13 +35,16 @@ const Navbar = () => {
   return (
     <HeaderContainer>
       <LogoTitle onClick={goMain}>UMC Movie</LogoTitle>
-      <MoveCategory>
+      <HamburgerMenu onClick={toggleMenu}>
+        ☰
+      </HamburgerMenu>
+      <MoveCategory menuOpen={menuOpen}>
         { isLoggedIn ?
         <CategoryTitle onClick={() => logOut()}>로그아웃</CategoryTitle> :
-        <div>
+        <>
           <CategoryTitle onClick={() => navigate(`/login`)}>로그인</CategoryTitle>
           <CategoryTitle onClick={() => navigate(`/signup`)}>회원가입</CategoryTitle>
-        </div>
+        </>
         }
         <CategoryTitle onClick={() => navigate(`/popular`)}>Popular</CategoryTitle>
         <CategoryTitle onClick={() => navigate(`/nowplaying`)}>Now Playing</CategoryTitle>
@@ -68,17 +76,60 @@ const LogoTitle = styled.p`
   cursor: pointer;
 `
 
+const HamburgerMenu = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 10px;
+  height: 100%;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
 const MoveCategory = styled.div`
   display: flex;
+  align-items: center;
+  position: fixed;
+  top: 40px;
+  right: ${({ menuOpen }) => (menuOpen ? '0' : '-100%')}; /* Off-screen to the right when closed */
+  width: 100%;
+  height: 100vh;
+  background-color: rgb(21, 30, 63);
+  transition: right 0.3s ease-in-out; /* Smooth transition */
+  flex-direction: column; /* Vertical layout */
+
+  @media (min-width: 769px) {
+    display: flex; /* Show menu for screens larger than 768px */
+    position: static;
+    width: auto;
+    height: auto;
+    background-color: transparent;
+    padding-top: 0;
+    flex-direction: row;
+    transition: none; /* Disable transition for larger screens */
+  }
+
 `
 
 const CategoryTitle = styled.button`
-  color: white;
-  margin: 0 10px;
+color: white;
+  margin: 10px 0;
   font-size: 13px;
   cursor: pointer;
   background: transparent;
   border: none;
+  display: flex;
+  justify-content: flex-start; /* Align text to the left */
+  padding-left: 20px; /* Add padding for better appearance */
+  
+  @media (max-width: 768px) {
+    width: 100%; /* Make each menu item take full width on small screens */
+  }
 
   &:hover {
     font-size: 15px;
