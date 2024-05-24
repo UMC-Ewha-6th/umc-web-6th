@@ -143,6 +143,7 @@ const SearchBox = styled.div`
   align-items: center;
   padding-left: 40px;
   gap: 20px;
+  width: 150px;
 `
 
 const SearchInput = styled.input`

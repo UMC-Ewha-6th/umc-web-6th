@@ -266,6 +266,8 @@ const BannerContainer = styled.div`
 const SearchContainer = styled(BannerContainer)`
   background: rgb(26, 35, 78);
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 const SearchText = styled.h4`
@@ -276,16 +278,17 @@ const SearchText = styled.h4`
 `
 
 const SearchInput = styled.input`
-  width: 370px;
+  width: 300px;
   height: 35px;
   border-radius: 20px;
   border: none;
   padding-left: 20px;
   margin-top: 15px;
+  
 `
 const Submit = styled.button`
 margin-top: 40px;
-width: 390px;
+width: 320px;
 height: 35px;
 border-radius: 20px;
 border: none;

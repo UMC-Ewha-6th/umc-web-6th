@@ -168,7 +168,7 @@ const SearchText = styled.h4`
 `
 
 const SearchInput = styled.input`
-  width: 370px;
+  width: 280px;
   height: 35px;
   border-radius: 20px;
   border: none;
@@ -177,7 +177,7 @@ const SearchInput = styled.input`
 `
 const Submit = styled.button`
 margin-top: 40px;
-width: 390px;
+width: 300px;
 height: 35px;
 border-radius: 20px;
 border: none;
