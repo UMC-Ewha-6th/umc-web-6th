@@ -12,6 +12,7 @@ const MainPage = () => {
   const [userName, setUserName] = useState("");
   const [isUserLoading, setIsUserLoading] = useState(true);
   const [isSearchHover, setIsSearchHover] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -31,6 +32,7 @@ const MainPage = () => {
           config
         );
         setUserName(response.data.name);
+        setIsLoggedIn(true);
       } catch (error) {
         setError("유저 정보를 불러올 수 없습니다.");
       }
@@ -40,6 +42,28 @@ const MainPage = () => {
 
   useEffect(() => {
     fetchUserData();
+  }, []);
+
+  const checkLoginStatus = () => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  };
+  useEffect(() => {
+    checkLoginStatus();
+  }, [location]);
+
+  // 이름 바뀌게
+
+  useEffect(() => {
+    const handleLoginStateChange = () => {
+      checkLoginStatus();
+    };
+
+    window.addEventListener("loginStateChange", handleLoginStateChange);
+
+    return () => {
+      window.removeEventListener("loginStateChange", handleLoginStateChange);
+    };
   }, []);
 
   ////////////////////////////검색//////////////////////////////
@@ -93,13 +117,13 @@ const MainPage = () => {
   const getRoundedRating = (rating) => {
     return rating.toFixed(1);
   };
-
+  ////////////////////////////////////////////////////
   return (
     <Container>
       <MainContent>
         <MessageContainer onMouseEnter={() => setIsSearchHover(false)}>
           <Message>
-            {userName ? `${userName}님 환영합니다!` : "환영합니다!"}
+            {isLoggedIn ? `${userName}님 환영합니다!` : "환영합니다!"}
           </Message>
         </MessageContainer>
         <SearchContainer isSearchHover={isSearchHover}>
