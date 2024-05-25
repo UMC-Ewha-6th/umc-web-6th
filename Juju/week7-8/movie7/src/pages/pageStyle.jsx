@@ -32,17 +32,31 @@ export const PageButton1 = styled.div`
 padding : 10px;
 font-size : 20px;
 color: ${props => (props.page === 1 ? 'gray' : 'white')};
+
+@media (max-width : 480px) {
+    font-size : 15px;
+  }
 `;
 
 export const PageButton2 = styled.div`
 padding : 10px;
 width : calc(100% - 8px); 
 font-size : 20px;
+
+
+@media (max-width : 480px) {
+    font-size : 15px;
+  }
 `;
 
 export const CurrentPage = styled.div`
 padding : 10px;
 font-size : 20px;
+
+
+@media (max-width : 480px) {
+    font-size : 15px;
+  }
 `;
 
 

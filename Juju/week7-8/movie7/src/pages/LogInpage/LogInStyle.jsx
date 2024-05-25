@@ -11,6 +11,12 @@ font-size : 20px;
 text-align: center;
 justify-content: center;
 align-items: center;
+
+@media (max-width: 768px) {
+    font-size : 15px;
+}
+
+
 `;
 
 export const Input = styled.input`
@@ -22,6 +28,16 @@ font-size : 15px;
 font-family: var(--font);
 color: black;
 padding-left : 18px;
+
+@media (max-width: 768px) {
+    width : 390px;
+    font-size : 13px;
+  }
+
+@media (max-width: 480px) {
+    width : 300px;
+    font-size : 13px;
+}
 `;
 
 export const ErrorMessage = styled.div`
@@ -29,6 +45,10 @@ color: red;
 font-size : 13px;
 margin-left : 10px;
 margin-bottom : 13px;
+
+@media (max-width: 480px) {
+  font-size : 12px;
+}
 `;
 
 export const InputBox = styled.div`
@@ -40,6 +60,21 @@ display: flex;
 justify-content: center; 
 align-items: center;
 flex-direction: column;
+
+@media (max-width: 768px) {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    flex-direction: column;
+  }
+
+  @media (max-width: 480px) {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    flex-direction: column;
+}
+
 `;
 
 export const SubmitBox = styled.div`
@@ -55,4 +90,17 @@ color : black;
 font-size : 18px;
 font-family: var(--font);
 background-color : ${props => (props.$formValid ? 'yellow' : 'white')};
+
+@media (max-width: 768px) {
+    width : 410px;
+    font-size : 15px;
+  }
+
+@media (max-width: 480px) {
+    width : 320px;
+    height : 50px;
+    font-size : 14px;
+}
+
+  
 `;
