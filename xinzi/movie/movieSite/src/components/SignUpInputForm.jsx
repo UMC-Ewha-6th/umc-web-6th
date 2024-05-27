@@ -3,6 +3,8 @@ import React from "react";
 import styled from "styled-components";
 
 const InputFormWrapper = styled.div`
+    display: flex;
+    justify-content: center;
     margin: 8px;
 `;
 
@@ -13,6 +15,16 @@ const SignUpInputField = styled.input`
     border-radius: 7px;
     border: none;
     padding: 5px;
+
+    @media (max-width: 768px) {
+      font-size: 12px;
+      width: 70%;
+    }
+  
+    @media (max-width: 480px) {
+      font-size: 11px;
+      width: 70%;
+    }
 `;
 
 const MessageDiv = styled.div`

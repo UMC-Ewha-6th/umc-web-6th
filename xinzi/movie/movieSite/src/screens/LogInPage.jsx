@@ -22,6 +22,17 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding: 20px;
+  
+  @media (max-width: 768px) {
+    width: 300px;
+    height: 450px;
+  }
+
+  @media (max-width: 480px) {
+    width: 280px;
+    height: 400px;
+  }
 `;
 
 const Header = styled.span`
@@ -29,12 +40,21 @@ const Header = styled.span`
   font-weight: 600;
   color: white;
   margin: 15px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 const InputDiv = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  width: 100%;
 `;
 
 const LoginButton = styled.button`
@@ -44,6 +64,18 @@ const LoginButton = styled.button`
   border-radius: 7px;
   margin: 20px;
   border: none;
+
+  @media (max-width: 768px) {
+    height: 25px;
+    width: 80%;
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    height: 23px;
+    width: 80%;
+    font-size: 12px;
+  }
 `;
 
 const LogInPage = () => {
@@ -96,9 +128,7 @@ const LogInPage = () => {
             onChange={handlePasswordChange}
           />
         </InputDiv>
-        <div>
-          <LoginButton onClick={handleLogin}>로그인</LoginButton>
-        </div>
+        <LoginButton onClick={handleLogin}>로그인</LoginButton>
       </Wrapper>
     </Screen>
   );

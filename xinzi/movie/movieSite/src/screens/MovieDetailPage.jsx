@@ -7,23 +7,35 @@ import Cast from "../components/Cast";
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   background-color: rgba(0, 0, 0, 0.8);
   height: 90vh;
   width: 100%;
   justify-content: center;
   align-items: center;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const BackdropImage = styled.div`
-  height: 90vh;
   width: 100%;
   background-image: url(${props => props.src});
   background-size: cover;
+  background-position: center;
 `;
 
 const Image = styled.img`
-  height: 500px;
+  height: 300px;
   border-radius: 7px;
+
+  @media (min-width: 768px) {
+    height: 400px;
+  }
+  @media (min-width: 1024px) {
+    height: 500px;
+  }
 `;
 
 const InfoContainer = styled.div`
@@ -31,7 +43,14 @@ const InfoContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: left;
-  margin: 50px;
+  margin: 20px;
+
+  @media (min-width: 768px) {
+    margin: 30px 0 30px 30px;
+  }
+  @media (min-width: 1024px) {
+    margin: 50px 0 50px 50px;
+  }
 `;
 
 const Title = styled.h2`
@@ -59,10 +78,17 @@ const Text = styled.span`
 `;
 
 const Overview = styled.span`
-  width: 600px;
+  width: 100%;
   margin: 10px 0px;
   font-size: 15px;
   color: white;
+
+  @media (min-width: 768px) {
+    width: 400px;
+  }
+  @media (min-width: 1024px) {
+    width: 600px;
+  }
 `;
 
 const Screen = styled.div`
@@ -76,11 +102,21 @@ const Screen = styled.div`
 `;
 
 const CreditInfoWrapper = styled.div`
-    display: grid;
-    width: 80%;
-    grid-template-columns: repeat(10, 1fr);
-    grid-gap: 10px;
-    padding: 20px;
+  display: grid;
+  width: 80%;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  padding: 20px;
+
+    @media (min-width: 480px) {
+      grid-template-columns: repeat(5, 1fr);
+    }
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(7, 1fr);
+    }
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(10, 1fr);
+    }
 `;
 
 const MovieDetailPage = () => {

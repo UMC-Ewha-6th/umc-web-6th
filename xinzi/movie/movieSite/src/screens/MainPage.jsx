@@ -59,6 +59,14 @@ const SearchContainer = styled.div`
       : props.$searchDown
       ? css`${fadeOut} 0.3s ease-in-out`
       : "none"};
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 10px;
+  }
 `;
 
 const MainPage = () => {
@@ -68,7 +76,7 @@ const MainPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState("");
   const [username, setUsername] = useState("");
-  const [loading, setLoading] = useState(false); // 로딩 상태 추가
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -91,23 +99,19 @@ const MainPage = () => {
       setLoading(true);
       
       try {
-      
         const token = localStorage.getItem('token');
-        //console.log(token);
-
         const response = await axios.get('http://localhost:8080/auth/me',  {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        console.log('Response:', response.data);
         setUsername(response.data.username);
-        setLoading(false); // 로딩 끝
+        setLoading(false);
 
       } catch (error) {
         console.error('Error:', error);
-        setLoading(false); // 로딩 끝
+        setLoading(false);
       }
     };
 
@@ -116,7 +120,7 @@ const MainPage = () => {
       fetchData();
     } else setIsLoggedIn(false);
 
-  }, [localStorage.getItem('token')]);
+  }, []);
 
   return (
     <div>
