@@ -1,10 +1,12 @@
 import { NavLink, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Sidebar from "./Sidebar";
 
 // 네비게이션 바 컴포넌트 정의
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 추적하는 상태 변수
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // 사이드바 상태 변수
   const location = useLocation();
 
   const checkLoginStatus = () => {
@@ -22,44 +24,62 @@ const Navbar = () => {
     window.dispatchEvent(new Event("loginStateChange"));
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <NavbarContainer>
-      <NavMenu>
-        <NavItem>
-          <NavLinkStyled to="/">
-            <Logo>UMC MOVIE</Logo>
-          </NavLinkStyled>
-        </NavItem>
-        <Left>
-          {isLoggedIn ? (
+    <>
+      <NavbarContainer>
+        <NavMenu>
+          <NavItem>
+            <NavLinkStyled to="/">
+              <Logo>UMC MOVIE</Logo>
+            </NavLinkStyled>
+          </NavItem>
+
+          <Left>
+            {isLoggedIn ? (
+              <NavItem>
+                <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+              </NavItem>
+            ) : (
+              <>
+                <NavItem>
+                  <NavLinkStyled to="/login">로그인</NavLinkStyled>
+                </NavItem>
+                <NavItem>
+                  <NavLinkStyled to="/signup">회원가입</NavLinkStyled>
+                </NavItem>
+              </>
+            )}
             <NavItem>
-              <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+              <NavLinkStyled to="/popular">Popular</NavLinkStyled>
             </NavItem>
+            <NavItem>
+              <NavLinkStyled to="/now-playing">Now Playing</NavLinkStyled>
+            </NavItem>
+            <NavItem>
+              <NavLinkStyled to="/top-rated">Top Rated</NavLinkStyled>
+            </NavItem>
+            <NavItem>
+              <NavLinkStyled to="/upcoming">Upcoming</NavLinkStyled>
+            </NavItem>
+          </Left>
+          {isSidebarOpen ? (
+            <SidebarButton onClick={toggleSidebar}>&#128473;</SidebarButton>
           ) : (
-            <>
-              <NavItem>
-                <NavLinkStyled to="/login">로그인</NavLinkStyled>
-              </NavItem>
-              <NavItem>
-                <NavLinkStyled to="/signup">회원가입</NavLinkStyled>
-              </NavItem>
-            </>
+            <SidebarButton onClick={toggleSidebar}>☰</SidebarButton>
           )}
-          <NavItem>
-            <NavLinkStyled to="/popular">Popular</NavLinkStyled>
-          </NavItem>
-          <NavItem>
-            <NavLinkStyled to="/now-playing">Now Playing</NavLinkStyled>
-          </NavItem>
-          <NavItem>
-            <NavLinkStyled to="/top-rated">Top Rated</NavLinkStyled>
-          </NavItem>
-          <NavItem>
-            <NavLinkStyled to="/upcoming">Upcoming</NavLinkStyled>
-          </NavItem>
-        </Left>
-      </NavMenu>
-    </NavbarContainer>
+        </NavMenu>
+      </NavbarContainer>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        setIsOpen={setIsSidebarOpen}
+        isLoggedIn={isLoggedIn}
+        handleLogout={handleLogout}
+      />
+    </>
   );
 };
 
@@ -76,7 +96,7 @@ const NavbarContainer = styled.nav`
   height: 40px;
   position: fixed;
   top: 0;
-  z-index: 1;
+  z-index: 2;
 `;
 
 const Logo = styled.span`
@@ -104,7 +124,7 @@ const NavLinkStyled = styled(NavLink)`
 
   &:hover {
     font-weight: bold;
-    cursor: pointer; /* 호버 시 커서를 포인터로 변경합니다. */
+    cursor: pointer;
   }
 
   &.active {
@@ -128,4 +148,24 @@ const LogoutButton = styled.button`
 const Left = styled.div`
   align-self: left;
   display: flex;
+
+  @media (max-width: 991px) {
+    display: none;
+  }
+`;
+
+const SidebarButton = styled.button`
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-right: 30px;
+  &:hover {
+    font-weight: bold;
+  }
+
+  @media (min-width: 992px) {
+    display: none;
+  }
 `;

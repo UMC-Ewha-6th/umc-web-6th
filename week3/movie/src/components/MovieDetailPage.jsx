@@ -46,15 +46,12 @@ const MovieDetail = () => {
 
   return (
     <>
+      <Background poster={`${baseUrl + state.backdrop_path}`}></Background>
+
       <DetailContainer>
-        <Background poster={`${baseUrl + state.backdrop_path}`}></Background>
-        <DetailImg>
-          <img
-            src={baseUrl + state.poster_path}
-            alt={state.title}
-            height="100%"
-          />
-        </DetailImg>
+        <DetailImgDiv>
+          <DetailImg src={baseUrl + state.poster_path} alt={state.title} />
+        </DetailImgDiv>
         <DetailInfo>
           <DetailTitle>{state.title}</DetailTitle>
           <DetailVote>
@@ -91,27 +88,44 @@ const MovieDetail = () => {
 };
 
 export default MovieDetail;
-const ActorName = styled.p`
-  color: white;
-`;
-const CreditWrapper = styled.div`
-  width: 100px;
-  height: 100px;
-  margin: 10px;
+const DetailContainer = styled.div`
   display: flex;
-  flex-direction: column;
-`;
-const ActorImage = styled.div`
-  height: 50px;
-  width: auto;
-`;
-const CreditContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  padding: 50px;
   justify-content: space-between;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 50px;
+  padding-top: 150px;
+  padding-bottom: 150px;
+  align-items: center;
+  @media (max-width: 480px) {
+    //작은 스마트폰
+    padding-top: 80px;
+    flex-direction: column;
+  }
+  @media (min-width: 480px) and (max-width: 768px) {
+    //큰 스마트폰, 태블릿
+    padding-top: 80px;
+    flex-direction: column;
+  }
+
+  @media (min-width: 769px) and (max-width: 991px) {
+    //태블릿 세로
+    height: 60vh;
+    flex-direction: row;
+  }
+  @media (min-width: 992px) and (max-width: 1279px) {
+    //태블릿 가로, 작은 데스크톱
+    height: 60vh;
+    flex-direction: row;
+  }
+
+  @media (min-width: 1280px) {
+    //큰 데스크톱, 모니터
+    height: 60vh;
+    flex-direction: row;
+  }
 `;
+
 const Background = styled.div`
   background-image: url(${(props) => props.poster});
   background-size: cover;
@@ -126,20 +140,7 @@ const Background = styled.div`
   opacity: 0.5;
 `;
 
-const DetailContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 60vh;
-  padding: 50px;
-  padding-top: 150px;
-  padding-bottom: 150px;
-  align-items: center;
-  overflow: hidden;
-`;
-
-const DetailImg = styled.div`
+const DetailImgDiv = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;
@@ -147,15 +148,62 @@ const DetailImg = styled.div`
   height: 100%;
 `;
 
+const DetailImg = styled.img`
+  @media (max-width: 480px) {
+    //작은 스마트폰
+    height: 30vh;
+  }
+  @media (min-width: 480px) and (max-width: 768px) {
+    //큰 스마트폰, 작은 태블릿 세로
+    height: 40vh;
+  }
+
+  @media (min-width: 769px) and (max-width: 991px) {
+    //태블릿 세로
+    height: 60%;
+  }
+  @media (min-width: 992px) and (max-width: 1279px) {
+    //태블릿 가로, 작은 데스크톱
+    height: 100%;
+  }
+
+  @media (min-width: 1280px) {
+    //큰 데스크톱, 모니터
+    height: 100%;
+  }
+`;
+
 const DetailInfo = styled.div`
   flex: 1;
   color: white;
   padding-left: 0px;
+  @media (max-width: 480px) {
+    //작은 스마트폰
+  }
+  @media (min-width: 480px) and (max-width: 768px) {
+    //큰 스마트폰, 태블릿
+  }
+
+  @media (min-width: 769px) and (max-width: 1279px) {
+    //큰 테블릿, 작은 데스크톱
+    min-width: 50vw;
+  }
+
+  @media (min-width: 1280px) {
+    //큰 데스크톱, 모니터
+  }
 `;
 
 const DetailTitle = styled.div`
   font-size: 33px;
   font-weight: bold;
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+  }
+  @media (min-width: 480px) and (max-width: 768px) {
+    //큰 스마트폰, 태블릿
+    font-size: 2rem;
+  }
 `;
 
 const DetailVote = styled.div`
@@ -164,6 +212,13 @@ const DetailVote = styled.div`
   margin-top: 20px;
   font-size: 19px;
   font-weight: bold;
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
+  @media (min-width: 480px) and (max-width: 768px) {
+    //큰 스마트폰, 태블릿
+    font-size: 1.2rem;
+  }
 `;
 
 const Starcontainer = styled.div`
@@ -178,12 +233,26 @@ const ReleaseDate = styled.div`
   margin-top: 20px;
   font-size: 19px;
   font-weight: bold;
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
+  @media (min-width: 480px) and (max-width: 768px) {
+    //큰 스마트폰, 태블릿
+    font-size: 1.2rem;
+  }
 `;
 
 const Text = styled.div`
   margin-top: 20px;
   font-size: 19px;
   font-weight: bold;
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
+  @media (min-width: 480px) and (max-width: 768px) {
+    //큰 스마트폰, 태블릿
+    font-size: 1.2rem;
+  }
 `;
 
 const Overview = styled.div`
@@ -216,4 +285,25 @@ const NoResultMessage = styled.p`
   color: white;
   font-size: 16px;
   margin-top: 20px;
+`;
+const ActorName = styled.p`
+  color: white;
+`;
+const CreditWrapper = styled.div`
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+`;
+const ActorImage = styled.div`
+  height: 50px;
+  width: auto;
+`;
+const CreditContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 50px;
+  justify-content: space-between;
+  margin: 0 auto;
 `;

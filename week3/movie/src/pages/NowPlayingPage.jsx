@@ -109,6 +109,8 @@ const AppContainer = styled.div`
   margin: 0 auto;
   padding: 16px;
   padding-top: 60px;
+  box-sizing: border-box;
+  padding-bottom: 30px;
   justify-content: center;
 `;
 

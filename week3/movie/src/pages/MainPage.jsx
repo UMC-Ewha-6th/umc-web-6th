@@ -126,7 +126,7 @@ const MainPage = () => {
             {isLoggedIn ? `${userName}님 환영합니다!` : "환영합니다!"}
           </Message>
         </MessageContainer>
-        <SearchContainer isSearchHover={isSearchHover}>
+        <SearchContainer issearchhover={isSearchHover.toString()}>
           <Message>🎥Find Your Movies !</Message>
           <Search>
             <SearchInput
@@ -217,7 +217,24 @@ const MessageContainer = styled.div`
 
 const Message = styled.p`
   color: white;
-  font-size: 30px;
+  @media (max-width: 480px) {
+    //작은 스마트폰
+    font-size: 1.5rem;
+  }
+  @media (min-width: 480px) and (max-width: 768px) {
+    //큰 스마트폰, 태블릿
+    font-size: 1.5rem;
+  }
+
+  @media (min-width: 769px) and (max-width: 1279px) {
+    //큰 테블릿, 작은 데스크톱
+    font-size: 30px;
+  }
+
+  @media (min-width: 1280px) {
+    //큰 데스크톱, 모니터
+    font-size: 30px;
+  }
 `;
 
 const SearchContainer = styled.div`
@@ -229,19 +246,40 @@ const SearchContainer = styled.div`
   background-color: #22254b;
   padding-top: 20px;
   transition: transform 0.3s ease-in-out;
-  ${({ isSearchHover }) =>
-    isSearchHover &&
+  ${({ issearchhover }) =>
+    issearchhover === "true" &&
     css`
       transform: translateY(-18vh);
     `}
 `;
 
 const SearchInput = styled.input`
-  height: 40px;
-  width: 40%;
   margin: 20px auto;
   border-radius: 30px;
   padding-inline-start: 20px;
+  @media (max-width: 480px) {
+    //작은 스마트폰
+    height: 30px;
+    width: 80%;
+  }
+  @media (min-width: 480px) and (max-width: 768px) {
+    //큰 스마트폰, 태블릿
+    height: 35px;
+    width: 60%;
+  }
+
+  @media (min-width: 769px) and (max-width: 1279px) {
+    //큰 테블릿, 작은 데스크톱
+    height: 40px;
+    width: 40%;
+    min-width: 350px;
+  }
+
+  @media (min-width: 1280px) {
+    //큰 데스크톱, 모니터
+    height: 40px;
+    width: 40%;
+  }
 `;
 
 const Search = styled.div`

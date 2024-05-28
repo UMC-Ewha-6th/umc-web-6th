@@ -53,6 +53,7 @@ const Popular = () => {
         <MoviePage>
           {movies.map((data) => (
             <Movie
+              key={data.id}
               id={data.id}
               backdrop_path={data.backdrop_path}
               title={data.title}
@@ -83,5 +84,7 @@ const AppContainer = styled.div`
   margin: 0 auto; /* 좌우 여백을 자동으로 설정하여 가운데 정렬합니다. */
   padding: 16px; /* 위아래 여백을 추가합니다. */
   padding-top: 60px;
+  padding-bottom: 30px;
+  box-sizing: border-box;
   justify-content: center;
 `;
