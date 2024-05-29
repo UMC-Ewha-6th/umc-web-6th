@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Movies from "../components/Movies.jsx";
 import styled from "styled-components";
@@ -28,26 +28,36 @@ const TopRatedPage = () => {
         console.error(error);
       });
   }, [])
+
   return (
-    <>
-    {loading ? (<Loading />) : (
-      <MovieContainer>
-      {movieData.map((data, index) => (
-        <Movies data={data} key={index}/>
-      ))}
-    </MovieContainer>
-    )}
-    </>
+    <Container>
+      {loading ? (<Loading />) : (
+        <MovieContainer>
+          {movieData.map((data, index) => (
+            <Movies data={data} key={index}/>
+          ))}
+        </MovieContainer>
+      )}
+    </Container>
   );
 };
 
 export default TopRatedPage;
 
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+`;
+
 const MovieContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   background-color: rgb(33, 35, 72);
   padding: 0 5px;
   width: 100%;
-  height: auto;
-  flex-wrap: wrap;
-`
+`;
+

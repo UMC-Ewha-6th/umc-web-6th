@@ -138,18 +138,17 @@ const validatePassword = (password) => {
 
 const SignUpContainer = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: rgb(33, 35, 72);
-  padding: 0 5px;
-  width: 100%;
-  height: 670px;
-  flex-wrap: wrap;
-`
+  min-height: 100vh;
+`;
 
 const SignUp = styled.div`
-  width: 600px;
-  display: block;
-  margin: 0 auto;
-  margin-top: 5%;
+  width: 90%;
+  max-width: 600px;
+  padding: 50px;
+  border-radius: 20px;
 `;
 
 const Form = styled.div`
@@ -157,41 +156,38 @@ const Form = styled.div`
 `;
 
 const Input = styled.input`
-  width: 400px;
+  width: 100%;
   height: 30px;
   border: 2px solid #D9D9D9;
-  margin-left: 100px;
   border-radius: 30px;
   padding-left: 10px;
+  margin-top: 5px;
 
-  -webkit-appearance: none; /* Chrome, Safari, Opera */
-  appearance: none; /* Standard syntax */
-  
-  /* 내부 스핀 버튼 숨기기 */
-  &::-webkit-inner-spin-button,
-  &::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  &:focus {
+    outline: none;
   }
 `;
 
 const Button = styled.button`
-  display: block;
-  margin: 0 auto;
-  width: 420px;
+  width: 100%;
   height: 40px;
   border-radius: 30px;
-  background-color: ${({ disabled }) => (disabled ? 'white' : '#FFD400')};
+  background-color: ${({ disabled }) => (disabled ? 'gray' : '#FFD400')};
   margin-top: 20px;
-  
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const Small = styled.small`
   color: red;
-  margin-left: 100px
+  margin-top: 5px;
 `;
 
 const Login = styled.div`
-  margin-left: 100px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
   color: white;
-`
+`;

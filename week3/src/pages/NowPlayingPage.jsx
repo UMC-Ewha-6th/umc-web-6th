@@ -59,28 +59,27 @@ const NowPlayingPage = () => {
       }
     }
   };
-  
-  
 
   useEffect(() => {
-  // observer 요소 설정
-  const observerElement = document.getElementById('observer');
-  if (observerElement && observer.current) {
-    observer.current.observe(observerElement);
-  }
-  // observer 해제
-  return () => {
+    // observer 요소 설정
+    const observerElement = document.getElementById('observer');
     if (observerElement && observer.current) {
-      observer.current.disconnect();
+      observer.current.observe(observerElement);
     }
-  };
-}, [observer]);
-  
+    // observer 해제
+    return () => {
+      if (observerElement && observer.current) {
+        observer.current.disconnect();
+      }
+    };
+  }, [observer]);
 
   return (
-    <>
+    <Container>
       {loading ? (
-        <Loading />
+        <LoadingContainer>
+          <Loading />
+        </LoadingContainer>
       ) : (
         <>
           <MovieContainer>
@@ -88,15 +87,27 @@ const NowPlayingPage = () => {
               <Movies data={data} key={index} />
             ))}
           </MovieContainer>
-          <div id="observer" style={{ height: '20px', margin: '20px 0' }}></div>
-          {loadingNextPage && <Loading />} {/* 다음 페이지 로딩 중일 때 스피너 표시 */}
+          <ObserverDiv id="observer"></ObserverDiv>
+          {loadingNextPage && (
+            <LoadingContainer>
+              <Loading />
+            </LoadingContainer>
+          )}
         </>
       )}
-    </>
+    </Container>
   );
 };
 
 export default NowPlayingPage;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+`;
 
 const MovieContainer = styled.div`
   display: flex;
@@ -105,4 +116,16 @@ const MovieContainer = styled.div`
   width: 100%;
   height: auto;
   flex-wrap: wrap;
+`;
+
+const ObserverDiv = styled.div`
+  height: 20px;
+  margin: 20px 0;
+`;
+
+const LoadingContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;

@@ -43,6 +43,10 @@ const Container = styled.div`
   padding: 50px;
   background-color: rgb(56, 58, 102);
   color: white;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
 `;
 
 const Info = styled.div`
@@ -51,7 +55,11 @@ const Info = styled.div`
   justify-content: center;
   align-items: center;
   padding-top: 100px;
-  gap: 80px; 
+  gap: 80px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const BackgroundPoster = styled.img`
@@ -70,14 +78,19 @@ const Poster = styled.img`
   width: 300px;
   height: 450px;
   margin-right: 60px;
-  margin-bottom:200px;
+  margin-bottom: 200px;
   z-index: 1;
+
+  @media (max-width: 768px) {
+    margin: 0;
+    margin-bottom: 20px;
+  }
 `;
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom:100px;
+  margin-bottom: 100px;
   z-index: 1;
 `;
 
@@ -96,6 +109,10 @@ const Overview = styled.p`
   font-size: 16px;
   margin-top: 10px;
   width: 400px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Credit = styled.div`

@@ -43,7 +43,7 @@ const PopularPage = () => {
   };
 
   return (
-    <>
+    <Container>
       {loading ? (<Loading />) : (
         <>
           <MovieContainer>
@@ -58,14 +58,22 @@ const PopularPage = () => {
                 <CurrentPage>{page}</CurrentPage>
                 {/* 다음 페이지로 이동하는 버튼 */}
                 <PageButton onClick={nextPage} disabled={page === totalPages}>＞</PageButton>
-            </PaginationContainer>
+          </PaginationContainer>
         </>
       )}
-    </>
+    </Container>
   );
 };
 
 export default PopularPage;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+`;
 
 const MovieContainer = styled.div`
   display: flex;
@@ -74,15 +82,6 @@ const MovieContainer = styled.div`
   width: 100%;
   height: auto;
   flex-wrap: wrap;
-`;
-
-
-const Button = styled.button`
-  width: 150px;
-  height: 40px;
-  border-radius: 30px;
-  background-color: ${({ disabled }) => (disabled ? 'gray' : '#FFD400')};
-  margin: 0 10px;
 `;
 
 const PaginationContainer = styled.div`
@@ -94,16 +93,19 @@ const PaginationContainer = styled.div`
   margin-bottom: 20px;
   text-align: center; /* 내부 요소 수직 가운데 정렬 */
   background-color: rgb(33, 35, 72);
+  width: 100%; /* 반응형으로 가로 너비 설정 */
 `;
 
-const PageButton = styled.p`
+const PageButton = styled.button`
   margin: 0 5px;
   font-size: 20px;
   color: ${({ disabled }) => (disabled ? 'black' : 'gray')};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  background-color: transparent; /* 버튼 배경색 투명으로 설정 */
+  border: none; /* 테두리 제거 */
 `;
 
-const CurrentPage = styled.p`
+const CurrentPage = styled.span`
   margin: 0 5px;
   font-size: 20px;
 `;

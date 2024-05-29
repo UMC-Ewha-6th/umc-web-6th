@@ -4,7 +4,6 @@ import Movies from "../components/Movies.jsx";
 import axios from 'axios';
 
 const MainPage = () => {
-
   const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태 추가
   const [searchResults, setSearchResults] = useState([]); // 검색 결과 상태 추가
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
@@ -106,38 +105,37 @@ export default MainPage;
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-`
+  min-height: 100vh;
+`;
 
 const BannerContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  left: 0;
-  width: 100%;
-  height: 30vh;
   background: black;
-`
+  padding: 20px;
+`;
 
 const TitleText = styled.h1`
   color: white;
-  margin-bottom: 20px;
-`
-
-const SearchText = styled.h2`
-  color: white;
-  font-size: 24px;
-`
+  margin: 0;
+`;
 
 const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   background: rgb(26, 35, 78);
-  height: 100vh;
-`
+  flex-grow: 1;
+  padding: 20px;
+`;
+
+const SearchText = styled.h2`
+  color: white;
+  font-size: 24px;
+  margin-bottom: 20px;
+`;
 
 const SearchBox = styled.div`
   display: flex;
@@ -145,23 +143,29 @@ const SearchBox = styled.div`
   align-items: center;
   gap: 20px;
   margin-bottom: 20px;
-`
+`;
 
 const SearchInput = styled.input`
-  width: 370px;
+  width: 100%;
+  max-width: 400px;
   height: 35px;
   border-radius: 20px;
   border: none;
-`
+  padding: 0 10px;
+`;
 
 const Result = styled.div`
   display: flex;
-  background-color: rgb(33, 35, 72);
-  padding: 0 5px;
-  width: 1250px;
-  height: 500px;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: 1200px;
+  margin: auto;
   overflow-y: auto;
+  height: 50vh;
+  padding: 10px;
+  background-color: rgb(33, 35, 72);
+  border-radius: 10px;
   &::-webkit-scrollbar {
     width: 8px;
   }
@@ -172,10 +176,10 @@ const Result = styled.div`
   &::-webkit-scrollbar-track {
     background-color: transparent;
   }
-`
+`;
 
 const LoadingText = styled.p`
   color: white;
   font-size: 20px;
   margin: auto;
-`
+`;
