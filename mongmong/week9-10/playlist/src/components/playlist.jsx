@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ChevronUp, ChevronDown } from '../constants/icons';  // Adjust the import path as necessary
-import styled from 'styled-components';
+import styled from "styled-components";
 import { increment, decrement, clear} from '../redux/cartSlice';  // Adjust the import path as necessary
 import Modal from './modal';
 import { openModal } from '../redux/modalSlice';
