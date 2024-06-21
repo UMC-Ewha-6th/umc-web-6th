@@ -1,0 +1,17 @@
+.list {
+    list-style-type: none;
+  }
+  
+  .checkbox {
+    margin-right: 10px;
+  }
+  
+  .todolist {
+    display: inline-block;
+    width: 200px;
+  }
+  
+  .deleteBtn {
+    margin-left: 10px;
+  }
+  
