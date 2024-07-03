@@ -7,27 +7,21 @@ import Loading from '../components/Loading';
 
 const Container = styled.div`
   color: white;
-  width: 100vw;
+  width: 100%;
   margin-top: 65px;
 `;
 
-const Movie = styled.div`
-  color: white;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-`;
-
 const Box = styled.div`
-  width: 1260px;
+  width: 100%;
   gap: 20px;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  margin: 20px 0;
+  padding: 20px 0;
 `;
 
 const Loader = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: center;
   margin-top: 40vh;
@@ -85,23 +79,21 @@ export default function PopularPage() {
     <Container>
       {isLoading ? (
         <>
-          <Movie>
-            <Box>
-              {movieList.map((item, idx) => {
-                return (
-                  <div key={idx}>
-                    <MovieBox
-                      link={`/movie/${item.id}`}
-                      movieImage={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                      title={item.title}
-                      overview={item.overview}
-                      star={item.vote_average}
-                    />
-                  </div>
-                );
-              })}
-            </Box>
-          </Movie>
+          <Box>
+            {movieList.map((item, idx) => {
+              return (
+                <div key={idx}>
+                  <MovieBox
+                    link={`/movie/${item.id}`}
+                    movieImage={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                    title={item.title}
+                    overview={item.overview}
+                    star={item.vote_average}
+                  />
+                </div>
+              );
+            })}
+          </Box>
           <Pagination>
             <LeftButton $isBelow={page === 1 ? true : false} onClick={onClickLeftBtn}>
               〈

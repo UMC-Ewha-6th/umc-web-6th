@@ -4,20 +4,26 @@
   src: url(../../public/assets/Pretendard-Regular.ttf) format('ttf');
 }
 
+* {
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
+}
+
+html,
 body {
   padding: 0;
   margin: 0;
-  width: 100;
+  width: 100%;
+  height: 100%;
   overflow-x: hidden;
   background-color: rgb(37, 50, 100);
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: 'Pretendard_Mid';
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-use-select: none;
-  user-select: none;
 }
 
 body::-webkit-scrollbar {

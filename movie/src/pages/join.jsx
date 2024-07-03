@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { useNavigate, Link } from 'react-router-dom';
 import { postJoin } from '../apis/Join';
 import { useMutation } from 'react-query';
+import { media } from '../styles/media';
 
 const Container = styled.div`
   color: white;
-  width: 100vw;
+  width: 100%;
   margin-top: 90px;
   display: flex;
   flex-direction: column;
@@ -28,6 +29,12 @@ const Form = styled.form`
 `;
 
 const Part = styled.div`
+  ${media.desktop`
+  width: 465px;`}
+  ${media.tablet`
+  width: 400px;`}
+  ${media.phone`
+  width: 335px;`}
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,7 +42,7 @@ const Part = styled.div`
 `;
 
 const Input = styled.input`
-  width: 450px;
+  width: 95%;
   height: 35px;
   font-size: 13px;
   border: transparent;
@@ -47,7 +54,7 @@ const Input = styled.input`
 `;
 
 const Btn = styled.input`
-  width: 465px;
+  width: 100%;
   height: 45px;
   border: transparent;
   border-radius: 22px;
@@ -64,6 +71,9 @@ const Btn = styled.input`
 
 const TextBox = styled.div`
   display: flex;
+  ${media.desktop`
+  flex-direction: row;`}
+  flex-direction: column;
   gap: 20px;
   color: white;
   font-size: 14px;
@@ -79,7 +89,7 @@ const NavLink = styled(Link)`
 `;
 
 const ShowMsg = styled.div`
-  width: 445px;
+  width: 90%;
   font-size: 12px;
   color: ${props => (props.$isError ? 'green' : 'red')};
 `;

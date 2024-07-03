@@ -71,6 +71,8 @@ const ExplainTitle = styled.div`
 
 const ExplainPosition = styled.div`
   width: ${props => (props.$isSmall ? '238px' : '300px')};
+  height: ${props => (props.$isSmall ? '360px' : '400px')};
+  overflow-y: hidden;
   display: flex;
   justify-content: center;
 `;

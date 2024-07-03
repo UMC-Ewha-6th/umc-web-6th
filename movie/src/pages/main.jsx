@@ -4,6 +4,7 @@ import { getMovieList } from '../apis/Movie';
 import { useMutation, useQuery } from 'react-query';
 import MovieBox from '../components/MovieBox';
 import { getAuth } from '../apis/Join';
+import { media } from '../styles/media';
 
 const Container = styled.div`
   color: white;
@@ -42,6 +43,8 @@ const FindBox = styled.div`
 `;
 
 const Input = styled.input`
+  ${media.phone`
+  width: 290px;`}
   width: 335px;
   height: 35px;
   border: transparent;
@@ -62,12 +65,18 @@ const FindBtn = styled.div`
 `;
 
 const MovieList = styled.div`
-  width: 998px;
+  ${media.desktop`
+  width: 998px;`}
+  ${media.tablet`
+  width: 610px;`}
+  ${media.phone`
+  width: 300px;`}
   height: 500px;
   border: transparent;
   border-radius: 10px;
   background-color: rgb(32, 44, 91);
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   padding: 20px 60px;
   gap: 13px;

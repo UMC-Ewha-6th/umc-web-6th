@@ -4,6 +4,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { getMovieList, getStaffList } from '../apis/Movie';
 import { useQuery } from 'react-query';
 import Loading from '../components/Loading';
+import { media } from '../styles/media';
 
 const Container = styled.div`
   color: white;
@@ -23,11 +24,14 @@ const OpacityBox = styled.div`
 `;
 
 const DetailBox = styled.div`
+  ${media.desktop`
+  flex-direction: row;`}
   width: 100%;
   height: 100%;
   padding: 100px 0;
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 60px;
@@ -68,7 +72,12 @@ const OverviewBox = styled.div`
 
 const Overview = styled.div`
   font-size: 13px;
-  width: 600px;
+  ${media.desktop`
+  width: 600px;`}
+  ${media.tablet`
+  width: 400px;`}
+  ${media.phone`
+  width: 300px;`}
 `;
 
 const CastBox = styled.div`
@@ -83,8 +92,14 @@ const CastBox = styled.div`
 
 const PersonBox = styled.div`
   margin-top: 18px;
-  width: 1100px;
+  ${media.desktop`
+  width: 1100px;`}
+  ${media.tablet`
+  width: 700px;`}
+  ${media.phone`
+  width: 300px;`}
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 40px;
 `;
@@ -120,6 +135,7 @@ export default function DetailPage() {
   const params = useParams();
   const [movie, setMovie] = useState({});
   const [staffList, setStaffList] = useState([]);
+  const [crewList, setCrewList] = useState([]);
   const [isDetailLoading, setIsDetailLoading] = useState(false);
   const [isStaffLoading, setIsStaffLoading] = useState(false);
   const star = [];
@@ -140,6 +156,7 @@ export default function DetailPage() {
     onSuccess: data => {
       console.log(data.cast);
       setStaffList(data.cast);
+      setCrewList(data.crew);
       setIsStaffLoading(true);
     },
     onError: error => {
@@ -191,6 +208,18 @@ export default function DetailPage() {
             <Title>출연진 및 제작진</Title>
             <PersonBox>
               {staffList.map(item => (
+                <ProfileBox>
+                  <Profile
+                    src={
+                      item.profile_path
+                        ? `https://image.tmdb.org/t/p/w500${item.profile_path}`
+                        : `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSz7ztleRwzXhFdiwBYqZ8cib9RvEsukVVUS3niN1YQ&s`
+                    }
+                  />
+                  <ProfileText>{item.name}</ProfileText>
+                </ProfileBox>
+              ))}
+              {crewList.map(item => (
                 <ProfileBox>
                   <Profile
                     src={
